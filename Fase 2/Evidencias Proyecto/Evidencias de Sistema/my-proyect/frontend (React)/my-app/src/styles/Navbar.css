@@ -1,0 +1,55 @@
+/* src/components/Navbar.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #004080; /* Azul oscuro */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-list li {
+  margin-right: 1.5rem; /* Espaciado entre los elementos de la lista */
+}
+
+.navbar-right {
+  margin-left: auto;
+  display: flex;
+}
+
+.navbar-item {
+  margin-left: 1rem;
+}
+
+.navbar-button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff; /* Color principal */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Cambia el color del texto de los enlaces de navegación */
+.navbar-list li a {
+  color: white; /* Color del texto */
+  text-decoration: none; /* Quitar subrayado */
+  font-weight: bold; /* Texto en negrita */
+}
+
+.navbar-list li a:hover {
+  color: #80d1ff; /* Color al pasar el mouse */
+}
+
+.navbar-button:hover {
+  background-color: #0056b3; /* Color al pasar el mouse */
+  transform: translateY(-2px);
+}
