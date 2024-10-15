@@ -1,0 +1,16 @@
+/* src/components/Footer.css */
+.footer {
+    background-color: #282c34; /* Color oscuro */
+    color: white;
+    text-align: center;
+    padding: 1.5rem 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer p {
+    margin: 10;
+    font-size: 0.9rem;
+}

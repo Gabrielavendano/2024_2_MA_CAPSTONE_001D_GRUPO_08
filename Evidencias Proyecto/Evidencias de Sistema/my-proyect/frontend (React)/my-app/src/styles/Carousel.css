@@ -1,0 +1,36 @@
+/* src/styles/Carousel.css */
+.carousel {
+  position: relative;
+  max-width: 100%; /* Asegura que el carrusel no se desborde */
+  margin: 1rem 0; /* Espacio alrededor del carrusel */
+  border-radius: 8px; /* Esquinas redondeadas */
+  overflow: hidden; /* Ocultar elementos que se desborden */
+}
+
+.carousel-inner {
+  height: 300px; /* Altura fija para el carrusel */
+  background-size: cover; /* Asegura que la imagen cubra el área */
+  background-position: center; /* Centrar la imagen */
+  transition: background-image 0.5s ease; /* Transición suave */
+}
+
+.left-arrow, .right-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente */
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 2rem;
+  padding: 0.5rem;
+  z-index: 1000; /* Asegura que los botones estén encima */
+}
+
+.left-arrow {
+  left: 10px; /* Espacio desde la izquierda */
+}
+
+.right-arrow {
+  right: 10px; /* Espacio desde la derecha */
+}
