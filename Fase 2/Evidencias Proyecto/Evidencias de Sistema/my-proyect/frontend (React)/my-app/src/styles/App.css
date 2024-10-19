@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    height: 100%; /* Ocupa el 100% de la pantalla */
   }
   
   h1, h2 {
@@ -51,6 +52,22 @@ body {
     color: white;
     text-decoration: none;
   }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Altura mínima del 100% de la ventana */
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.content {
+  flex: 1; /* Este crece para ocupar el espacio disponible */
+}
 
   
   

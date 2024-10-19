@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/Register.css';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,7 @@ const Register = () => {
     password: '',
     confirm_password: ''
   });
-
+  const navigate = useNavigate(); // Inicializar navigate
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -19,8 +20,8 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirm_password) {
-      alert('Las contraseñas no coinciden');
-      return;
+        alert('Las contraseñas no coinciden');
+        return;
     }
 
     try {
@@ -31,9 +32,21 @@ const Register = () => {
         password: formData.password
       });
       alert('Registro exitoso');
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        confirm_password: ''
+      });  // Limpiar campos después del registro
     } catch (error) {
       console.error('Error al registrar:', error);
     }
+};
+
+  // Función para volver a la página anterior
+  const handleGoBack = () => {
+    navigate('/');
   };
 
   return (
@@ -80,7 +93,14 @@ const Register = () => {
           onChange={handleChange}
           required
         />
-        <button type="submit">Registrar</button>
+    <div className="button-group">
+      <button type="submit" className="login-button">
+        Registrarse
+      </button>
+      <button type="button" onClick={handleGoBack} className="back-button">
+        Volver
+      </button>
+    </div>
       </form>
     </div>
   );
