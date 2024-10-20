@@ -16,7 +16,7 @@
 }
 
 .navbar-list li {
-  margin-right: 1.5rem; /* Espaciado entre los elementos de la lista */
+  margin-right: 3.5rem; /* Espaciado entre los elementos de la lista */
 }
 
 .navbar-right {
@@ -36,6 +36,7 @@
   border-radius: 5px;
   text-decoration: none;
   transition: background-color 0.3s, transform 0.2s;
+  margin-left: 1.5rem;
 }
 
 /* Cambia el color del texto de los enlaces de navegación */
@@ -52,4 +53,10 @@
 .navbar-button:hover {
   background-color: #0056b3; /* Color al pasar el mouse */
   transform: translateY(-2px);
+}
+
+.navbar-logo-img {
+    height: 80px; /* Ajusta la altura según sea necesario */
+    width: auto;  /* Mantiene la proporción */
+    margin-right: 1rem;
 }

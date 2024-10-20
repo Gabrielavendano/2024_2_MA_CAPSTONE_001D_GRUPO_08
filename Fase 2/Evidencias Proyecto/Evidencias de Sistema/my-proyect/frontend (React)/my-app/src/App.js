@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './styles/App.css';
 import Home from './components/Home';  
-import Store from './components/Store';  
+import About from './components/About';  
+import Services from './components/Services';  
+import Gallery from './components/Gallery';  
 import Contact from './components/Contact';  
 import Navbar from './components/Navbar';  
 import Login from './components/Login';
@@ -12,10 +14,12 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />  {/* Colocamos la barra de navegación fuera de Routes para que aparezca en todas las vistas */}
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/store" element={<Store />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

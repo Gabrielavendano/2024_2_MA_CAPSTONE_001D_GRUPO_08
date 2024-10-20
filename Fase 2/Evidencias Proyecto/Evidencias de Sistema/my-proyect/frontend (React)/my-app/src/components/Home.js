@@ -3,21 +3,22 @@ import Carousel from './Carousel';
 
 function Home() {
     const carouselImages = [
-        'https://via.placeholder.com/600x300.png?text=Noticia+1',
-        'https://via.placeholder.com/600x300.png?text=Noticia+2',
-        'https://via.placeholder.com/600x300.png?text=Noticia+3',
+        'https://via.placeholder.com/600x300.png?text=Perriot+Hotel+-+Tu+mejor+opción',
+        'https://via.placeholder.com/600x300.png?text=Cuidado+Exclusivo+para+Perros',
+        'https://via.placeholder.com/600x300.png?text=Reserva+con+nosotros',
     ];
 
     return (
         <div>
-            <h1>Bienvenido a nuestra Página de Inicio</h1>
+            <h1>Bienvenido a Perriot Hotel</h1>
+            <p>El mejor cuidado para tu amigo canino.</p>
             <section>
-                <h2>Noticias</h2>
+                <h2>Nuestras Instalaciones</h2>
                 <Carousel images={carouselImages} />
             </section>
             <section>
-                <h2>Consejos</h2>
-                <p>Consejos útiles para el adiestramiento de tu mascota.</p>
+                <h2>Consejos para el cuidado de tu mascota</h2>
+                <p>Consejos útiles sobre la alimentación, el ejercicio y la salud de tu perro.</p>
             </section>
         </div>
     );
