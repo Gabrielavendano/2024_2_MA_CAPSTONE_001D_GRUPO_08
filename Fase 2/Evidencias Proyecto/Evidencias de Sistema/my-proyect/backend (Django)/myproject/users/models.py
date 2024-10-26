@@ -1,20 +1,13 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+    
+class Reserva(models.Model):
+    nombre = models.CharField(max_length=100)
+    telefono = models.CharField(max_length=15)
+    nombre_mascota = models.CharField(max_length=100)
+    raza_mascota = models.CharField(max_length=100)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
 
-class CustomUser(AbstractUser):
-    # Campos personalizados (si los necesitas)
-
-    groups = models.ManyToManyField(
-        Group,
-        related_name='customuser_set',  # Cambia el nombre según prefieras
-        blank=True,
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='customuser_set',  # Cambia el nombre según prefieras
-        blank=True,
-    )
-
-    class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
+class Contacto(models.Model):
+    nombre = models.CharField(max_length=100)
+    correo = models.EmailField()
+    mensaje = models.TextField()
