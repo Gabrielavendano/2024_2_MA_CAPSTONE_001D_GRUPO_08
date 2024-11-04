@@ -31,7 +31,7 @@ function Navbar() {
         {user ? (
           <>
             <span>Bienvenido, {user.firstName} {user.lastName}</span>
-            <button onClick={logout} className="navbar-button">Cerrar Sesión</button>
+            <button onClick={logout} className="navbar-button2">Cerrar Sesión</button>
           </>
         ) : (
           <>

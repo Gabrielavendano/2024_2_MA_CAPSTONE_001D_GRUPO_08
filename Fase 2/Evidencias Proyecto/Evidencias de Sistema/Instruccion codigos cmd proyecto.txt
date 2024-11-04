@@ -1,0 +1,26 @@
+abrir cmd del proyecto (en este caso my-app)
+
+npm install react-router-dom@latest
+
+
+en el cmd de my project del backend de django
+
+pip install django
+pip show django
+
+pip install djangorestframework
+pip show djangorestframework
+
+pip install django-cors-headers
+pip show django-cors-headers
+
+pip install djangorestframework-simplejwt
+pip install django-mssql-backend
+
+
+EN EL CMD DE MY PROJECT FRONT END REACT
+
+npm install react-scripts
+npm install express mssql cors
+npm install axios
+npm install boostrap

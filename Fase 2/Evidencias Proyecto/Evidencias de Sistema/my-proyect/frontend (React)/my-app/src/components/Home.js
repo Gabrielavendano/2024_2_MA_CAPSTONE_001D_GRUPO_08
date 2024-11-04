@@ -12,7 +12,7 @@ function Home() {
         container: {
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '60px',
+            padding: '180px',
             backgroundColor: '#fdfdfd',
             borderRadius: '10px',
             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',

@@ -69,8 +69,17 @@
   .login-button {
     background-color: #4CAF50; /* Color verde */
   }
+  .login-button:hover{
+    background-color: #1d9e1d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); 
+  }
   
   .back-button {
     background-color: #f44336; /* Color rojo */
   }
-  
+  .back-button:hover{
+    background-color: #af1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); 
+  }

@@ -1,4 +1,43 @@
-/* src/components/Navbar.css */
+/* Botón de la navbar con efecto 3D */
+.navbar-button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff; /* Color principal */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  margin-left: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para el efecto 3D */
+}
+
+/* Efecto de elevación al pasar el mouse */
+.navbar-button:hover {
+  background-color: #43c8d1; /* Color al pasar el mouse */
+  transform: translateY(-2px); /* Eleva ligeramente */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Incrementa la sombra */
+}
+
+/* Efecto de "presión" al hacer clic */
+.navbar-button:active {
+  transform: translateY(2px); /* Baja el botón para simular presión */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce la sombra */
+}
+.navbar-logo-img {
+  height: 80px; /* Ajusta la altura según sea necesario */
+  width: auto;  /* Mantiene la proporción */
+  margin-right: 1rem;
+}
+.navbar-list li a {
+  color: white; /* Color del texto */
+  text-decoration: none; /* Quitar subrayado */
+  font-weight: bold; /* Texto en negrita */
+}
+
+.navbar-list li a:hover {
+  color: #80d1ff; /* Color al pasar el mouse */
+}
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -25,39 +64,22 @@
   color: white;
 }
 
-.navbar-item {
-  margin-left: 1rem;
-}
-
-.navbar-button {
+.navbar-button2 {
   padding: 0.5rem 1rem;
-  background-color: #007bff; /* Color principal */
+  background-color: #ff3232; /* Color principal */
   color: white;
   border: none;
   border-radius: 5px;
   text-decoration: none;
-  transition: background-color 0.3s, transform 0.2s;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
   margin-left: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para el efecto 3D */
 }
 
-/* Cambia el color del texto de los enlaces de navegación */
-.navbar-list li a {
-  color: white; /* Color del texto */
-  text-decoration: none; /* Quitar subrayado */
-  font-weight: bold; /* Texto en negrita */
-}
-
-.navbar-list li a:hover {
-  color: #80d1ff; /* Color al pasar el mouse */
-}
-
-.navbar-button:hover {
-  background-color: #b30f00; /* Color al pasar el mouse */
-  transform: translateY(-2px);
-}
-
-.navbar-logo-img {
-    height: 80px; /* Ajusta la altura según sea necesario */
-    width: auto;  /* Mantiene la proporción */
-    margin-right: 1rem;
+/* Efecto de elevación al pasar el mouse */
+.navbar-button2:hover {
+  background-color: #a81717; /* Color al pasar el mouse */
+  transform: translateY(-2px); /* Eleva ligeramente */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Incrementa la sombra */
 }
