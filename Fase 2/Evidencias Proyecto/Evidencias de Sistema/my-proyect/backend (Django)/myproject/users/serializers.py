@@ -6,8 +6,8 @@ CustomUser = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser  # Usa el modelo personalizado
-        fields = ('first_name', 'last_name', 'email', 'password')
+        model = CustomUser
+        fields = ('id', 'first_name', 'last_name', 'email', 'password')
         extra_kwargs = {
             'password': {'write_only': True}  
         }
@@ -17,9 +17,9 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
             email=validated_data['email'],
-            username=validated_data['email'],  # Usar email como nombre de usuario
+            username=validated_data['email'],
         )
-        user.set_password(validated_data['password'])  # Establece la contraseña de forma segura
+        user.set_password(validated_data['password'])
         user.save()
         return user
 
@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
         if CustomUser.objects.filter(email=value).exists():
             raise serializers.ValidationError("Este correo electrónico ya está registrado.")
         return value
-    
+
 class ReservaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reserva
@@ -36,5 +36,4 @@ class ReservaSerializer(serializers.ModelSerializer):
 class ContactoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contacto
-        fields = ['nombre', 'correo', 'mensaje']
-
+        fields = ['nombre', 'correo', 'asunto', 'mensaje']

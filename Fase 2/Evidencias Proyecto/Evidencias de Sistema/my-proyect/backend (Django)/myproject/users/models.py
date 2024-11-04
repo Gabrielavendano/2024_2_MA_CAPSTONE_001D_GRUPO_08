@@ -10,4 +10,5 @@ class Reserva(models.Model):
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
     correo = models.EmailField()
-    mensaje = models.TextField()
+    asunto = models.TextField(max_length=100, default='Asunto predeterminado')
+    mensaje = models.TextField(max_length=100)

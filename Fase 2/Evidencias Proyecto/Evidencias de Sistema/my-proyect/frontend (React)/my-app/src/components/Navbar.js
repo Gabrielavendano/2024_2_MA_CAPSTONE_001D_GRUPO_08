@@ -4,7 +4,6 @@ import { useAuth } from '../AuthContext';
 
 function Navbar() {
   const { user, logout } = useAuth();
-
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -20,6 +19,7 @@ function Navbar() {
         <li><Link to="/services">Servicios</Link></li>
         <li><Link to="/gallery">Galería</Link></li>
         <li><Link to="/contact">Contacto</Link></li>
+        {user && <li><Link to="/mis-reservas">Mis Reservas</Link></li>}
         {user && user.is_superuser && ( // Verifica si el usuario es superusuario
           <>
             <li><Link to="/reservas">Reservas</Link></li>
@@ -30,7 +30,7 @@ function Navbar() {
       <div className="navbar-right">
         {user ? (
           <>
-            <span>Bienvenido, {user.first_name} {user.last_name}</span>
+            <span>Bienvenido, {user.firstName} {user.lastName}</span>
             <button onClick={logout} className="navbar-button">Cerrar Sesión</button>
           </>
         ) : (

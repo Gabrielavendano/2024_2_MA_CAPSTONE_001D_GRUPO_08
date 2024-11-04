@@ -1,0 +1,22 @@
+.services{
+    display: flex;
+    justify-content: space-around;
+    overflow-x: scroll;
+}
+
+.button-service{
+    padding: 30px 70px;
+    font-size: 30px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.button-wrapper{
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}

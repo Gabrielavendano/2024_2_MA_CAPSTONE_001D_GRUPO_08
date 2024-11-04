@@ -5,6 +5,7 @@ from .models import Reserva, Contacto
 from .serializers import UserSerializer, ReservaSerializer, ContactoSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User  # Asegúrate de importar el modelo de usuario
+from django.contrib.auth import get_user_model
 
 @api_view(['POST'])
 def register_user(request):
@@ -15,17 +16,18 @@ def register_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def login_user(request):
+def login_user(request): 
+    CustomUser = get_user_model()  
     email = request.data.get('email')
     password = request.data.get('password')
 
-    print(f"Email: {email}, Password: {password}")  # Para depuración
 
     # Cambiar username por email si estás usando email como nombre de usuario
     user = authenticate(request, username=email, password=password)
-
     if user is not None:
+        userr = CustomUser.objects.get(email=email)
         user_data = {
+            'id': userr.id,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
@@ -52,3 +54,4 @@ def listar_contactos(request):
     contactos = Contacto.objects.all()
     serializer = ContactoSerializer(contactos, many=True)
     return Response(serializer.data)
+

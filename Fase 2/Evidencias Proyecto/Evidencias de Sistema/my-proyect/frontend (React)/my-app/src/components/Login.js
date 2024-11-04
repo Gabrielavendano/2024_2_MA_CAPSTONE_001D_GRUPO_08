@@ -21,6 +21,7 @@ const Login = () => {
 
       // Aquí se espera que la respuesta contenga un objeto user con las propiedades adecuadas
       login({
+        id: response.data.user.id,
         firstName: response.data.user.first_name,
         lastName: response.data.user.last_name,
         email: response.data.user.email,
