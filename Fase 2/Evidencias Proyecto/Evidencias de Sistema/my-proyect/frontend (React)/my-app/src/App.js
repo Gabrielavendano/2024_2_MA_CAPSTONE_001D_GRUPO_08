@@ -30,10 +30,10 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/reservas" element={<Reservas />} /> {/* Ruta para Reservas */}
-            <Route path="/reservar" element={<Reservar />} /> {/* Ruta para Reservas */}
-            <Route path="/mis-reservas" element={<MisReservas />} /> {/* Ruta para Reservas */}
-            <Route path="/contactos" element={<Contactos />} /> {/* Ruta para Contactos */}
+            <Route path="/reservas" element={<Reservas />} /> 
+            <Route path="/reservar" element={<Reservar />} /> 
+            <Route path="/mis-reservas" element={<MisReservas />} /> 
+            <Route path="/contactos" element={<Contactos />} /> 
           </Routes>
         </div>
       </AuthProvider>

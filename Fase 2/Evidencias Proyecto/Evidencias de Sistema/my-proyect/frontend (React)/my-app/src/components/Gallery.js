@@ -1,10 +1,13 @@
 import React from 'react';
+import "../styles/Gallery.css";
 
 function Gallery() {
   const galleryImages = [
-    'https://via.placeholder.com/600x400.png?text=Habitación+1',
-    'https://via.placeholder.com/600x400.png?text=Habitación+2',
-    'https://via.placeholder.com/600x400.png?text=Área+de+Juegos',
+    '/images/foto.jpeg',
+    '/images/pieza1.jpg',
+    '/images/pieza2.jpg',
+    '/images/pieza3.jpg',
+    '/images/pieza4.jpg',
   ];
 
   return (

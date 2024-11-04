@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import "../styles/Contact.css";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
 function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', asunto: '' , message: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +25,8 @@ function Contact() {
     try {
       const response = await axios.post('http://localhost:8000/contacts/create/', data);
       console.log(response)
+      alert('Enviado con exito!');
+      navigate('/');
     } catch (error) {
         console.error('Error al obtener servicios:', error);// Muestra el mensaje de error del backend
     }

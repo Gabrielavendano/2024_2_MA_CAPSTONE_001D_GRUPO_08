@@ -20,3 +20,11 @@
     width: 100%;
     justify-content: center;
 }
+
+.card-service-wrapper .card-header{
+    color: black
+}
+
+.card-service-wrapper{
+    background-color: hwb(0 99% 1%);
+}
