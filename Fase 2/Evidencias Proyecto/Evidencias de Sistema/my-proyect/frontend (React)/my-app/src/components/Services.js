@@ -3,13 +3,12 @@ import CardServicio from './CardServicio';
 import "../styles/Services.css"
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../AuthContext';
+
 
 
 
 
 function Services() {
-  const { user } = useAuth();
   const [services, setServices] = useState([]);
 
   
@@ -44,10 +43,9 @@ function Services() {
       <div className='services'>
         {sv}
       </div>
-      {user &&
       <div className='button-wrapper'>
         <button className='button-service' onClick={() => {navigate('/reservar');}} >Reservar</button>
-      </div>}
+      </div>
       
     </section>
   );

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import "../styles/Reservar.css";
 import axios from 'axios';
-import { useAuth } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const Reservar = () => {
-    const { user } = useAuth();
     const [services, setServices] = useState([]);
     const [prices, setPrices] = useState({});
+    const navigate = useNavigate();
     useEffect(() =>  {
         const data = async () => {
             try {
@@ -49,7 +49,6 @@ const Reservar = () => {
             serviceJson[service.id] = {service};
         })
         const data = {
-            user_id: user.id,
             services: serviceJson,
             init_date:dateInit,
             end_date: dateEnd,
@@ -61,6 +60,8 @@ const Reservar = () => {
         try {
             const response = await axios.post('http://localhost:8000/reserves/create/', data);
             console.log(response)
+            alert('Reserva creada con éxito');
+            navigate('/');
         } catch (error) {
             console.error('Error al obtener servicios:', error);// Muestra el mensaje de error del backend
         }
@@ -83,44 +84,49 @@ const Reservar = () => {
         setPrice(20000 + service_price)
     }
 
-    return(
-    <>
-        <h1>Reservar</h1>
-        <div className='reserve-form-wrapper'>
-
-            <form className= 'reserve-form' id='form'>
-                <h3>Servicios</h3>
-                <div class="form-group">
-                    {serv}
+    return (
+        <>
+            <h1 className="page-title">Reservar</h1>
+            <div className="reserve-form-wrapper">
+                <div className="forms-container">
+                    <form className="reserve-form">
+                        <h3>Servicios</h3>
+                        <div className="form-group">
+                            {serv}
+                        </div>
+                        <div className="row justify-content-between my-3">
+                            <div className="col-5">
+                                <h3>Fecha Ingreso</h3>
+                                <input type="date" className="form-control" onChange={(e) => setDateInit(e.target.value)} placeholder="Fecha de entrada" />
+                            </div>
+                            <div className="col-5">
+                                <h3>Fecha Salida</h3>
+                                <input type="date" className="form-control" onChange={(e) => setDateEnd(e.target.value)} placeholder="Fecha de salida" />
+                            </div>
+                        </div>
+                    </form>
+                    <form className="reserve-form">
+                        <h3>Datos Mascota</h3>
+                        <label>Nombre</label>
+                        <input type="text" className="form-control" onChange={(e) => setNamePet(e.target.value)} placeholder="Ingrese un nombre" />
+                        <label>Tipo</label>
+                        <select className="form-control" onChange={(e) => setTypePet(e.target.value)}>
+                            <option>Perro</option>
+                            <option>Gato</option>
+                            <option>Otros</option>
+                        </select>
+                        <label>Raza</label>
+                        <input className="form-control" onChange={(e) => setBreedPet(e.target.value)} placeholder="Ingrese una raza" />
+                    </form>
                 </div>
-                <div className='row justify-content-between my-3'>
-                    <div className='col-5'>
-                        <h3>Fecha Ingreso</h3>
-                        <input type='date' className="form-control" onChange={(e) => setDateInit(e.target.value)} placeholder='Fecha de entrada'/>
-                    </div>
-                    <div className='col-5'>
-                        <h3>Fecha Salida</h3>
-                        <input type='date' className="form-control" onChange={(e) => setDateEnd(e.target.value)} placeholder='Fecha de salida'/>
-                    </div>
+                <div className="total-wrapper">
+                    <h3>Total</h3>
+                    <div>$ {price}</div>
                 </div>
-                <h3>Datos Mascota</h3>
-                <label>Nombre</label>
-                <input type='text' className="form-control" onChange={(e) => setNamePet(e.target.value)} placeholder='Ingrese un nombre'/>
-                <label>Tipo</label>
-                <select type='text' className="form-control" onChange={(e) => setTypePet(e.target.value)}  placeholder='Ingrese un tipo'>
-                    <option>Perro</option>
-                    <option>Gato</option>
-                    <option>Otros</option>
-                </select>
-                <label>Raza</label>
-                <input  className="form-control " onChange={(e) => setBreedPet(e.target.value)} placeholder='Ingrese una raza'/>
-                <h3>Total</h3>
-                <div>$ {price}</div>
-                <button type="button" class="btn btn-success my-2" onClick={reserve}>Reservar</button>
-            </form>
-        </div>
-    </>
-    )
-}
+                <button className="reserve-button" onClick={reserve}>Reservar</button>
+            </div>
+        </>
+    );
+};
 
-export default Reservar
+export default Reservar;

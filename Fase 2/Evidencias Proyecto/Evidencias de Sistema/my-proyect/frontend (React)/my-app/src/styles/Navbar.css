@@ -1,88 +1,115 @@
-/* Botón de la navbar con efecto 3D */
-.navbar-button {
-  padding: 0.5rem 1rem;
-  background-color: hwb(0 90% 0%);
-  color: rgba(0, 0, 0, 0.658);
-  border: none;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 2rem;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-  margin-left: 1.5rem;
-}
-
-/* Efecto de elevación al pasar el mouse */
-.navbar-button:hover {
-  background-color: #43c8d1; /* Color al pasar el mouse */
-  transform: translateY(-2px); /* Eleva ligeramente */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Incrementa la sombra */
-}
-
-/* Efecto de "presión" al hacer clic */
-.navbar-button:active {
-  transform: translateY(2px); /* Baja el botón para simular presión */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce la sombra */
-}
-.navbar-logo-img {
-  height: 200px; /* Ajusta la altura según sea necesario */
-  width: auto;  /* Mantiene la proporción */
-  margin-right: 1rem;
-}
-.navbar-list li a {
-  color: rgba(0, 0, 0, 0.658); /* Color del texto */
-  text-decoration: dashed; /* Estilo del subrayado */
-  font-weight: lighter;
-  font-size: 2rem;
-  padding: 5px 10px;
-  border-radius: 5px; /* Esquinas redondeadas */
-}
-
-
-.navbar-list li a:hover {
-  color: #80d1ff; /* Color al pasar el mouse */
-}
+/* Estilo general de la navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem;
   background-color: hwb(0 90% 0%);
+  position: relative;
+  flex-wrap: wrap; /* Permite que los elementos se ajusten si es necesario */
 }
 
+/* Logo de la navbar */
+.navbar-logo-img {
+  height: 100px; /* Ajusta la altura según sea necesario */
+  width: auto; /* Mantiene la proporción */
+  margin-right: 1rem;
+  flex: 0 1 200px; /* Permite que el logo no se estire */
+}
+
+/* Estilo de los enlaces en la lista */
 .navbar-list {
   list-style: none;
   display: flex;
   margin: 0;
   padding: 0;
+  flex: 1; /* Hace que los enlaces ocupen el espacio restante */
+  justify-content: flex-start; /* Alineación inicial */
+  flex-wrap: wrap; /* Permite que los enlaces se acomoden en filas si no caben */
 }
 
 .navbar-list li {
   margin-right: 3.5rem; /* Espaciado entre los elementos de la lista */
 }
 
-.navbar-right {
-  margin-left: auto;
-  display: flex;
-  color: rgb(0, 0, 0);
+.navbar-list li a {
+  color: rgba(0, 0, 0, 0.658);
+  text-decoration: dashed;
+  font-weight: lighter;
+  font-size: 1.5rem;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
+/* Estilo al pasar el mouse sobre los enlaces */
+.navbar-list li a:hover {
+  color: #80d1ff;
+}
+
+/* Estilo del área de botones de la derecha */
+.navbar-right {
+  display: flex;
+  color: rgb(0, 0, 0);
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.navbar-button,
 .navbar-button2 {
   padding: 0.5rem 1rem;
-  background-color: #ff3232; /* Color principal */
-  color: white;
+  font-size: 1.5rem;
+  background-color: hwb(233 90% 0%);
+  color: rgba(0, 0, 0, 0.658);
   border: none;
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
   margin-left: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para el efecto 3D */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Efecto de elevación al pasar el mouse */
-.navbar-button2:hover {
-  background-color: #a81717; /* Color al pasar el mouse */
-  transform: translateY(-2px); /* Eleva ligeramente */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Incrementa la sombra */
+/* Efecto al pasar el mouse */
+.navbar-button:hover, .navbar-button2:hover {
+  background-color: #43c8d1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Respuesta para pantallas más pequeñas (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Flexbox para que los items se apilen en lugar de estar en una fila */
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Se oculta la lista de enlaces por defecto */
+  .navbar-list {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  /* Mostrar el menú cuando la clase 'active' esté en la navbar */
+  .navbar.active .navbar-list {
+    display: flex;
+  }
+
+  /* Botón de hamburguesa */
+  .hamburger {
+    display: block;
+    font-size: 2rem;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+
+  /* Eliminar los márgenes en los enlaces cuando están en modo vertical */
+  .navbar-list li {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
 }

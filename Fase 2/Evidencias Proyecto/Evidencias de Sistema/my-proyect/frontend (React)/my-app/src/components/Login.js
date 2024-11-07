@@ -37,8 +37,8 @@ const Login = () => {
 
   return (
     <div>
-      <h2>Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
+      <h1 className="page-title">Iniciar Sesión</h1>
+      <form className="users-form" onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Correo Electrónico"

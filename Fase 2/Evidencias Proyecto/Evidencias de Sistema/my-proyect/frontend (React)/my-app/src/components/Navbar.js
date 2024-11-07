@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 import { useAuth } from '../AuthContext';
+import { useState } from 'react';
 
 function Navbar() {
   const { user, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para manejar el menú
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Cambiar el estado al hacer clic
+  };
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isMenuOpen ? 'active' : ''}`}>
       <div className="navbar-logo">
         <img
           src={`${process.env.PUBLIC_URL}/images/cropped-logo.png`}
@@ -13,20 +20,26 @@ function Navbar() {
           className="navbar-logo-img"
         />
       </div>
+
+      {/* Botón de hamburguesa */}
+      <div className="hamburger" onClick={toggleMenu}>
+        &#9776; {/* Símbolo de hamburguesa */}
+      </div>
+
       <ul className="navbar-list">
         <li><Link to="/">Inicio</Link></li>
         <li><Link to="/about">Quiénes Somos</Link></li>
         <li><Link to="/services">Servicios</Link></li>
         <li><Link to="/gallery">Galería</Link></li>
         <li><Link to="/contact">Contacto</Link></li>
-        {user && <li><Link to="/mis-reservas">Mis Reservas</Link></li>}
-        {user && user.is_superuser && ( // Verifica si el usuario es superusuario
+        {user && user.is_superuser && (
           <>
             <li><Link to="/reservas">Reservas</Link></li>
             <li><Link to="/contactos">Contactos</Link></li>
           </>
         )}
       </ul>
+
       <div className="navbar-right">
         {user ? (
           <>

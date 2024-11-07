@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Carousel.css';  // Para los estilos
+import '../styles/Carousel.css';
 
 const Carousel = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,13 +18,11 @@ const Carousel = ({ images }) => {
 
   return (
     <div className="carousel">
-      <div
-        className="carousel-inner"
-        style={{ backgroundImage: `url(${images[currentIndex]})` }}
-      >
-        <button className="left-arrow" onClick={prevSlide}>❮</button>
-        <button className="right-arrow" onClick={nextSlide}>❯</button>
+      <div className="carousel-inner">
+        <img src={images[currentIndex]} alt={`Slide ${currentIndex}`} />
       </div>
+      <button className="left-arrow" onClick={prevSlide}>❮</button>
+      <button className="right-arrow" onClick={nextSlide}>❯</button>
     </div>
   );
 };

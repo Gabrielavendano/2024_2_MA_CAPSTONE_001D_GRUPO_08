@@ -12,7 +12,7 @@ function Gallery() {
 
   return (
     <section>
-      <h1>Galería</h1>
+      <h1 className="page-title">Galería</h1>
       <div className="gallery">
         {galleryImages.map((url, index) => (
           <img key={index} src={url} alt={`Imagen ${index + 1}`} />

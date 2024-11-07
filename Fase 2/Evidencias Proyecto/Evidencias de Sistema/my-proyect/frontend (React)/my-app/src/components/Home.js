@@ -1,6 +1,7 @@
 import React from 'react';
 import Carousel from './Carousel';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Home.css';
 
 function Home() {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Home() {
     ];
 
     const handleReservationClick = () => {
-        navigate('/services'); // Cambia '/services' por la ruta a la que deseas redirigir
+        navigate('/reservar'); 
     };
 
     const styles = {
@@ -92,19 +93,23 @@ function Home() {
 
     return (
         <div style={styles.container}>
-            <h1 style={styles.title}>Bienvenido a Perriot Hotel</h1>
+            <h1 className="page-title">Bienvenido a Perriot Hotel</h1>
             <p style={styles.subtitle}>El mejor cuidado para tu amigo canino.</p>
             <div>
                 <Carousel images={carouselImages} />
                 <div style={{ textAlign: 'center' }}>
-                    <h1> Nuestro Hotel: </h1>
-                    <h2 style={styles.sectionTitle}>Hotel Canino, Guardería, Asilo de Ancianos,
-                        Etología Canina, Hogar Temporal, Cuidado de perros con tratamientos no infecciosos, y más…</h2>
+                <h2 style={styles.sectionTitle}>Si se va de vacaciones y no sabe donde dejar su mascota...</h2>
+                <h2 style={styles.sectionTitle}>Reserve aquí!</h2>
+                </div>
+                
+                <div style={{ textAlign: 'center' }}>
                     <button style={styles.button}     onMouseEnter={() => setHover(true)}
                     onMouseLeave={() => setHover(false)}onClick={handleReservationClick}>
                         Reservar
                     </button>
                 </div>
+            <br>
+            </br>
             </div>
             <h2 style={styles.sectionTitle}>Consejos para el cuidado de tu mascota</h2>
             <p style={styles.description}>

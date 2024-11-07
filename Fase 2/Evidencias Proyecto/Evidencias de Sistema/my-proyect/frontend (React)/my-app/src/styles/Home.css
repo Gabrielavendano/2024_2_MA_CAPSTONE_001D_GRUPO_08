@@ -1,0 +1,18 @@
+/* Home.css */
+
+/* Estilo del contenedor del carrusel para que ocupe todo el ancho */
+.carousel-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+/* Ajuste de la imagen del carrusel para que cubra todo el espacio */
+.carousel-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}

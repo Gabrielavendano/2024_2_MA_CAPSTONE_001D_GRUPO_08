@@ -51,7 +51,7 @@ const Register = () => {
 
   return (
     <div>
-      <h2>Registrarse</h2>
+      <h1 className="page-title">Registrarse</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

@@ -47,7 +47,7 @@ function Contact() {
 
   return (
     <div>
-      <h1>Formulario de Contacto</h1>
+      <h1 className="page-title">Formulario de Contacto</h1>
       <div className='form-wrapper'>
         <form className='contact-form'>
           <label>Nombre:</label>
@@ -81,7 +81,7 @@ function Contact() {
           {errors.asunto && <p style={{ color: 'red', fontSize: '0.9em' }}>{errors.asunto}</p>}
 
           <label>Mensaje:</label>
-          <textarea
+          <textarea rows="10"
             className="form-control"
             name="message"
             value={formData.message}
@@ -89,9 +89,10 @@ function Contact() {
           ></textarea>
           {errors.message && <p style={{ color: 'red', fontSize: '0.9em' }}>{errors.message}</p>}
 
-          <br />
           <button type="button" onClick={handleSubmit}>Enviar</button>
+          
         </form>
+        
       </div>
     </div>
   );
