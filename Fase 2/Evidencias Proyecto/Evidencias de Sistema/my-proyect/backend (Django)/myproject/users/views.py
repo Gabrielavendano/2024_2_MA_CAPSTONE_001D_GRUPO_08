@@ -16,21 +16,21 @@ def register_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def login_user(request): 
-    CustomUser = get_user_model()  
+def login_user(request):
+    CustomUser = get_user_model()
     email = request.data.get('email')
     password = request.data.get('password')
-
 
     # Cambiar username por email si estás usando email como nombre de usuario
     user = authenticate(request, username=email, password=password)
     if user is not None:
-        userr = CustomUser.objects.get(email=email)
+        user = CustomUser.objects.get(email=email)
         user_data = {
-            'id': userr.id,
+            'id': user.id,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
+            'is_superuser': user.is_superuser  # Incluir is_superuser
         }
         return Response({"user": user_data, "message": "Inicio de sesión exitoso"}, status=status.HTTP_200_OK)
     else:
@@ -42,6 +42,7 @@ def login_user(request):
             error_message = "Usuario no encontrado"
 
         return Response({"error": error_message}, status=status.HTTP_400_BAD_REQUEST)
+
     
 @api_view(['GET'])
 def listar_reservas(request):

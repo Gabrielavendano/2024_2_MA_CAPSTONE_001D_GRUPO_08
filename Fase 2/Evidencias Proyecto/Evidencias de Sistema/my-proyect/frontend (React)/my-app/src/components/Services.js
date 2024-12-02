@@ -4,10 +4,6 @@ import "../styles/Services.css"
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
-
-
-
 function Services() {
   const [services, setServices] = useState([]);
 

@@ -47,4 +47,54 @@
     max-width: 800px;
 }
 
+.form-check {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.service-label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.service-name {
+    flex: 1; /* Ocupa el espacio disponible */
+    text-align: left;
+}
+
+.service-price {
+    text-align: right;
+    white-space: nowrap; /* Evita que el precio se divida en varias líneas */
+}
+
+.reserve-form {
+    width: 100%;
+    max-width: 380px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border-radius: 10px;
+}
+
+.forms-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    gap: 20px;
+}
+
+.service-list .form-check-label {
+    font-size: 18px; /* Reduce el tamaño de la letra */
+    color: #333; /* Ajusta el color si es necesario */
+}
+
+.service-list .form-check-input {
+    transform: scale(0.9); /* Opcional: reduce el tamaño de los checkboxes */
+}
+
 

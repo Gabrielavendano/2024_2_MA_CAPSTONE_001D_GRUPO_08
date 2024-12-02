@@ -27,14 +27,17 @@ function Navbar() {
       </div>
 
       <ul className="navbar-list">
+        {/* Enlaces visibles para todos los usuarios, incluyendo no autenticados */}
         <li><Link to="/">Inicio</Link></li>
         <li><Link to="/about">Quiénes Somos</Link></li>
         <li><Link to="/services">Servicios</Link></li>
         <li><Link to="/gallery">Galería</Link></li>
         <li><Link to="/contact">Contacto</Link></li>
+
+        {/* Enlaces visibles solo para el superadmin */}
         {user && user.is_superuser && (
           <>
-            <li><Link to="/reservas">Reservas</Link></li>
+            <li><Link to="/reservas">Mis Reservas</Link></li>
             <li><Link to="/contactos">Contactos</Link></li>
           </>
         )}
@@ -43,7 +46,7 @@ function Navbar() {
       <div className="navbar-right">
         {user ? (
           <>
-            <span>Bienvenido, {user.firstName} {user.lastName}</span>
+            <span>Bienvenido, {user.first_name} {user.last_name}</span>
             <button onClick={logout} className="navbar-button2">Cerrar Sesión</button>
           </>
         ) : (
