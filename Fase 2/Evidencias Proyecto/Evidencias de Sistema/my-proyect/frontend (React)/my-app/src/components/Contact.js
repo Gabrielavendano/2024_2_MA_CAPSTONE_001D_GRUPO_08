@@ -48,8 +48,8 @@ function Contact() {
   return (
     <div>
       <h1 className="page-title">Formulario de Contacto</h1>
-      <div className='form-wrapper'>
-        <form className='contact-form'>
+      <div className="form-wrapper">
+        <form className="contact-form">
           <label>Nombre:</label>
           <input
             type="text"
@@ -58,9 +58,9 @@ function Contact() {
             value={formData.name}
             onChange={handleChange}
           />
-          {errors.name && <p style={{ color: 'red', fontSize: '0.9em' }}>{errors.name}</p>}
+          {errors.name && <p className="error-message">{errors.name}</p>}
 
-          <label>Correo Electrónico:</label>
+          <label>Mail:</label>
           <input
             type="email"
             className="form-control"
@@ -68,7 +68,7 @@ function Contact() {
             value={formData.email}
             onChange={handleChange}
           />
-          {errors.email && <p style={{ color: 'red', fontSize: '0.9em' }}>{errors.email}</p>}
+          {errors.email && <p className="error-message">{errors.email}</p>}
 
           <label>Asunto:</label>
           <input
@@ -78,7 +78,7 @@ function Contact() {
             value={formData.asunto}
             onChange={handleChange}
           />
-          {errors.asunto && <p style={{ color: 'red', fontSize: '0.9em' }}>{errors.asunto}</p>}
+          {errors.asunto && <p className="error-message">{errors.asunto}</p>}
 
           <label>Mensaje:</label>
           <textarea rows="10"
@@ -87,12 +87,11 @@ function Contact() {
             value={formData.message}
             onChange={handleChange}
           ></textarea>
-          {errors.message && <p style={{ color: 'red', fontSize: '0.9em' }}>{errors.message}</p>}
+          {errors.message && <p className="error-message">{errors.message}</p>}
 
           <button type="button" onClick={handleSubmit}>Enviar</button>
           
         </form>
-        
       </div>
     </div>
   );

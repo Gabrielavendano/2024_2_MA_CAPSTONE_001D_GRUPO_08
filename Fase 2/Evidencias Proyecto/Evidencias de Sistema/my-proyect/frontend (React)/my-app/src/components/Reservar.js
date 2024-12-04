@@ -9,23 +9,29 @@ const Reservar = () => {
     const { user } = useAuth();
     const [prices, setPrices] = useState({});
     const navigate = useNavigate();
-    useEffect(() =>  {
+    useEffect(() => {
         const data = async () => {
             try {
-            const response = await axios.get('http://localhost:8000/services/getall');
-            setServices(Object.values(response.data))
-            let prices = {};
-            response.data.forEach((service) => {
-                prices[service.id] = service.price
-            })
-            setPrices(prices)
+                const response = await axios.get('http://localhost:8000/services/getall');
+                setServices(Object.values(response.data));
+                let prices = {};
+                response.data.forEach((service) => {
+                    prices[service.id] = service.price;
+                });
+                setPrices(prices);
             } catch (error) {
-            console.error('Error al obtener servicios:', error);// Muestra el mensaje de error del backend
+                console.error('Error al obtener servicios:', error); // Muestra el mensaje de error del backend
             }
-        }
-        data(); 
-    
-    }, [])
+        };
+        data();
+    }, []);
+
+    // SE APLICA EL FORMATO DE NÚMEROS PARA LOS PRECIOS
+    function numberFormat(number) {
+        // SE ASEGURA DE QUE LOS NÚMEROS TENGAN SEPARACIÓN DE MILES Y DECIMALES
+        const formattedNumber = number.toLocaleString('de-DE');
+        return formattedNumber;
+    }
 
     const serv = services.map((service) => (
         <div className="form-check service-item" key={service.id}>
@@ -39,12 +45,11 @@ const Reservar = () => {
             />
             <label className="form-check-label service-label" htmlFor={`service_${service.id}`}>
                 <span className="service-name">{service.name}</span>
-                <span className="service-price">${numberFormat(service.price)}</span>
+                <span className="service-price">${numberFormat(service.price)}</span> 
+                {/* APLICA LA SEPARACIÓN DE DECIMALES EN LOS PRECIOS DE LOS SERVICIOS */}
             </label>
         </div>
     ));
-    
-
 
     const [listService, setListService] = useState([]);
     const [price, setPrice] = useState(20000);
@@ -53,9 +58,10 @@ const Reservar = () => {
     const [namePet, setNamePet] = useState('');
     const [typePet, setTypePet] = useState('Perro');
     const [breedPet, setBreedPet] = useState('');
+    const [email, setEmail] = useState(user?.email || '');
 
     async function reserve() {
-        let serviceJson = listService.map((service) => service.id); // Cambio aquí, solo el id
+        let serviceJson = listService.map((service) => service.id);
 
         let data = {
             services: serviceJson,
@@ -64,21 +70,25 @@ const Reservar = () => {
             pet_name: namePet,
             pet_type: typePet,
             pet_breed: breedPet,
-            total: price
+            total: price,
+            email: email,
         };
 
         if (user) {
             data = {
                 services: serviceJson,
                 init_date: dateInit,
-                user: user.id,  // Enviar el objeto 'user' con id
                 end_date: dateEnd,
                 pet_name: namePet,
                 pet_type: typePet,
                 pet_breed: breedPet,
-                total: price
+                total: price,
+                email: email,
+                user: user.id,
             };
         }
+
+        console.log('Datos que se envían al backend:', data);
 
         try {
             const response = await axios.post('http://localhost:8000/reserves/create/', data);
@@ -91,37 +101,31 @@ const Reservar = () => {
         }
     }
 
-
-    function listServiceChange(){
+    function listServiceChange() {
         const radio_services = document.getElementsByName("service");
         const list_services = [];
         let service_price = 0;
         const fecha1 = new Date(dateInit);
         const fecha2 = new Date(dateEnd);
-        let fechaDif = (fecha2 - fecha1)/ (1000 * 60 * 60 * 24) ;
-        if(!fechaDif){
+        let fechaDif = (fecha2 - fecha1) / (1000 * 60 * 60 * 24);
+        if (!fechaDif) {
             fechaDif = 1;
         }
         radio_services.forEach((element) => {
-            if(element.checked){
+            if (element.checked) {
                 let id = parseInt(element.id.split("_")[1]);
                 let service_data = services.find(item => item.id === id);
                 list_services.push(service_data);
                 service_price += parseInt(prices[id]);
             }
-        })
+        });
         setListService(list_services);
-        setPrice(20000* fechaDif + service_price );
-    }
-
-    function numberFormat(number){
-        const formattedNumber = number.toLocaleString('de-DE');
-        return formattedNumber;
+        setPrice(20000 * fechaDif + service_price);
     }
 
     useEffect(() => {
         listServiceChange();
-    }, [dateEnd, dateInit]); //
+    }, [dateEnd, dateInit]); // RECALCULA EL PRECIO CUANDO CAMBIAN LAS FECHAS
 
     return (
         <>
@@ -157,13 +161,24 @@ const Reservar = () => {
                         <label>Raza</label>
                         <input className="form-control" onChange={(e) => setBreedPet(e.target.value)} placeholder="Ingrese una raza" />
                     </form>
-                    
                 </div>
-                
+
+                <form className="reserve-form">
+                    <h3>Datos Contacto</h3>
+                    <label>Email</label>
+                    <input
+                        className="form-control"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Ingrese su correo"
+                        readOnly={!!user} // Solo lectura si está autenticado
+                    />
+                </form>
 
                 <div className="total-wrapper">
                     <h3>Total</h3>
-                    <div>$ {numberFormat(price)}</div>
+                    <div>$ {numberFormat(price)}</div> 
+                    {/* SE APLICA EL FORMATO DE NÚMERO AL TOTAL */}
                 </div>
                 <button className="reserve-button" onClick={reserve}>Reservar</button>
             </div>

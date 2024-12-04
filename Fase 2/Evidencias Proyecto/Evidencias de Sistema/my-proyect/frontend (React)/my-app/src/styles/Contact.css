@@ -1,22 +1,68 @@
-.contact-form{
-    width: 500px;
+.contact-form {
+    width: 800px; /* Aumentamos el tamaño del formulario */
     align-self: center;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border-radius: 10px;
-    padding: 15px;
+    padding: 20px;
     background-color: hwb(0 99% 1%);
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* Mayor proporción para los cuadros de texto */
+    gap: 5px; /* Reduce el espacio entre los elementos */
 }
 
-.form-wrapper{
+.contact-form label {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: 5px;
+    margin-left: 0; /* Elimina cualquier margen extra a la izquierda */
 }
 
-.button{
-    background-color: #4CAF50;
+.contact-form input, .contact-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%;
+    margin: 0; /* Elimina cualquier margen adicional */
 }
-.button:hover{
+
+.contact-form input {
+    height: 35px; /* Ajusta la altura de los campos de texto */
+}
+
+.contact-form textarea {
+    height: 140px; /* Aumenta la altura del área de texto (mensaje) */
+    resize: none; /* Evita que el usuario cambie el tamaño manualmente */
+}
+
+.contact-form input#email {
+    width: 100%; /* Hace que el correo electrónico ocupe toda la fila */
+}
+
+.contact-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    grid-column: span 2; /* Hace que el botón ocupe ambas columnas */
+    margin-top: 10px;
+}
+
+.contact-form button:hover {
     background-color: #1d9e1d;
     transform: translateY(-2px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    grid-column: span 2; /* Hace que el mensaje de error ocupe ambas columnas */
+    margin-top: 5px;
 }

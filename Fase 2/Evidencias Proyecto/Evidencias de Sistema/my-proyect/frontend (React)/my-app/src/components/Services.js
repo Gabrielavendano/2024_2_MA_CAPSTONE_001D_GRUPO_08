@@ -7,6 +7,10 @@ import axios from 'axios';
 function Services() {
   const [services, setServices] = useState([]);
 
+  function numberFormat(number) {
+    const formattedNumber = number.toLocaleString('de-DE');
+    return formattedNumber;
+  }
   
   useEffect(() =>  {
     const data = async () => {
@@ -21,14 +25,20 @@ function Services() {
     
   }, [])
 
-  const sv =  services.map((service) => 
-    <CardServicio name = {service.name} price = {service.price} info = {service.info} image={service.image}></CardServicio>
-  )
+  const sv = services.map((service) => (
+    <CardServicio
+      name={service.name}
+      price={numberFormat(service.price)} 
+      info={service.info}
+      image={service.image}
+      key={service.id}
+    />
+  ));
   const navigate = useNavigate();
 
   return (
     <section>
-      <h1>Servicios</h1>
+      <h1 className="page-title">Servicios</h1>
       {/* <ul>
         <li>Alojamiento personalizado para tu perro</li>
         <li>Paseos y actividades recreativas</li>

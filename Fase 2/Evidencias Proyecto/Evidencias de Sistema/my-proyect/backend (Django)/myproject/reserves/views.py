@@ -3,15 +3,51 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Reserve
 from .serializers import ReserveSerializer
+from django.contrib.auth import get_user_model
+from django.db import connection
+
+CustomUser = get_user_model()
 
 @api_view(['POST'])
 def create_reserve(request):
+    # Verifica si el usuario está presente en los datos enviados
+    user_id = request.data.get('user', None)
+    email = request.data.get('email', None)
+    print("Datos del request:", request.data)
+    if user_id:
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            email = user.email  
+            print("Usuario encontrado:", user, "Email:", email)
+        except CustomUser.DoesNotExist:
+            return Response({"error": "Usuario no encontrado"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        user = None
+
+    reserva_data = request.data.copy()
+    if user:
+        reserva_data['user'] = user.id
+    reserva_data['email'] = email  
+    print("Datos para el serializador:", reserva_data)
+
+    # Serializa los datos
     serializer = ReserveSerializer(data=request.data)
     if serializer.is_valid():
+        # Guarda la reserva en la base de datos
         serializer.save()
-        return Response({"message": "Servicio creado exitosamente"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "Reserva creada exitosamente"}, status=status.HTTP_201_CREATED)
+    
+    # Imprime y retorna errores en caso de datos inválidos
     print(serializer.errors)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+# Para visualizar la tabla reserves_reserve de la base de datos Sqlite3
+def show_columns():
+    with connection.cursor() as cursor:
+        cursor.execute("PRAGMA table_info(reserves_reserve);")
+        columns = cursor.fetchall()
+        for column in columns:
+            print(column)
 
 
 
