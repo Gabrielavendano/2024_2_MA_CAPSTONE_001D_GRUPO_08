@@ -20,19 +20,23 @@ const Login = () => {
       });
 
       // Aquí se espera que la respuesta contenga un objeto user con las propiedades adecuadas
-      login({
-        id: response.data.user.id,
-        firstName: response.data.user.first_name,
-        lastName: response.data.user.last_name,
-        email: response.data.user.email,
-        isAdmin: response.data.user.is_admin,
-      });
-      alert('Inicio de sesión exitoso');
-      navigate('/'); // Redirige a la página de inicio
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      alert(error.response?.data?.error || 'Error en el inicio de sesión'); // Muestra el mensaje de error del backend
-    }
+      if (response.data.user) {
+        login({
+           id: response.data.user.id,
+           firstName: response.data.user.first_name,
+           lastName: response.data.user.last_name,
+           email: response.data.user.email,
+           isAdmin: response.data.user.is_superuser, // Usa is_superuser
+        });
+        alert('Inicio de sesión exitoso');
+        navigate('/'); // Redirige a la página de inicio
+     } else {
+        alert(response.data.error || 'Error en el inicio de sesión');
+     }
+  } catch (error) {
+     console.error('Error al iniciar sesión:', error);
+     alert(error.response?.data?.error || 'Error en el inicio de sesión'); // Asegúrate de mostrar el error correcto
+  }
   };
 
   return (

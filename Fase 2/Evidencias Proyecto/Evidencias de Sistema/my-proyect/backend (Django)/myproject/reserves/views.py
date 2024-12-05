@@ -70,7 +70,7 @@ def edit_reserve(request, reserve_id):
         if not reserve:
             return Response({"error": "Reserva no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ReserveSerializer(reserve, data=request.data, partial=False)
+        serializer = ReserveSerializer(reserve, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

@@ -1,73 +1,34 @@
-/* Estilos generales de la tabla */
-table {
-    width: 100%;
-    border-collapse: collapse; /* Para evitar bordes dobles entre las celdas */
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
-  
-  /* Estilos de las celdas */
-  th, td {
-    text-align: left; /* Alineación de texto a la izquierda */
-    padding: 12px; /* Espaciado interno de las celdas */
-    border-bottom: 1px solid #ddd; /* Línea de separación entre filas */
-  }
-  
-  /* Encabezado de la tabla */
-  th {
-    background-color: #4CAF50; /* Color de fondo del encabezado */
-    color: white; /* Color del texto del encabezado */
-    font-weight: bold;
-  }
-  
-  /* Estilo para las filas */
-  tr:nth-child(even) {
-    background-color: #f2f2f2; /* Fila de color alternado para mejorar la legibilidad */
-  }
-  
-  /* Fila al pasar el ratón por encima */
-  tr:hover {
-    background-color: #ddd; /* Fondo claro cuando el ratón pasa sobre la fila */
-  }
-  
-  /* Estilo de los botones de acción */
-  button {
-    padding: 8px 16px;
-    background-color: #4CAF50; /* Color de fondo verde */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-right: 8px;
-  }
-  
-  button:hover {
-    background-color: #45a049; /* Fondo más oscuro al pasar el ratón por encima */
-  }
-  
-  button:disabled {
-    background-color: #ddd; /* Botón deshabilitado con color gris */
-    cursor: not-allowed;
-  }
-  
-  /* Ajustes para las celdas de los formularios de edición */
-  input[type="text"], input[type="date"], input[type="number"] {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%; /* Para que el input ocupe todo el ancho de la celda */
-    box-sizing: border-box;
-  }
-  
-  input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus {
-    border-color: #4CAF50; /* Color de borde al hacer foco */
-    outline: none;
-  }
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  text-align: left;
+}
 
-  .button-table{
-    width: 30%;
-  }
-  
+.admin-table th, .admin-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.admin-table th {
+  background-color: #f4f4f4;
+}
+
+.admin-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

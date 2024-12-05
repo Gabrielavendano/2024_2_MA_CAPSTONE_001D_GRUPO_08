@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 function Navbar() {
   const { user, logout } = useAuth();
+  console.log(user);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para manejar el menú
 
   const toggleMenu = () => {
@@ -27,35 +28,42 @@ function Navbar() {
       </div>
 
       <ul className="navbar-list">
-        {/* Enlaces visibles para todos los usuarios, incluyendo no autenticados */}
+        {/* Enlaces visibles para todos */}
         <li><Link to="/">Inicio</Link></li>
-        <li><Link to="/about">Quiénes Somos</Link></li>
-        <li><Link to="/services">Servicios</Link></li>
-        <li><Link to="/gallery">Galería</Link></li>
-        <li><Link to="/contact">Contacto</Link></li>
-
-        {/* Enlaces visibles solo para el superadmin */}
-        {user && user.is_superuser && (
+        {!user?.isAdmin && (
           <>
-            <li><Link to="/reservas">Mis Reservas</Link></li>
+            <li><Link to="/about">Quiénes Somos</Link></li>
+            <li><Link to="/services">Servicios</Link></li>
+            <li><Link to="/gallery">Galería</Link></li>
+            <li><Link to="/contact">Contacto</Link></li>
+          </>
+        )}
+
+        {user?.isAdmin && (
+          <>
+            <li><Link to="/reservas">Reservas</Link></li>
             <li><Link to="/contactos">Contactos</Link></li>
           </>
         )}
       </ul>
 
       <div className="navbar-right">
-        {user ? (
-          <>
-            <span>Bienvenido, {user.first_name} {user.last_name}</span>
-            <button onClick={logout} className="navbar-button2">Cerrar Sesión</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="navbar-button">Iniciar Sesión</Link>
-            <Link to="/register" className="navbar-button">Registrarse</Link>
-          </>
-        )}
-      </div>
+      {user ? (
+        <>
+          {user.isAdmin ? (
+            <span>Bienvenido, Admin</span> // Mostrar "Admin" si es administrador
+          ) : (
+            <span>Bienvenido, {user.firstName} {user.lastName}</span>
+          )}
+          <button onClick={logout} className="navbar-button2">Cerrar Sesión</button>
+        </>
+      ) : (
+        <>
+          <Link to="/login" className="navbar-button">Iniciar Sesión</Link>
+          <Link to="/register" className="navbar-button">Registrarse</Link>
+        </>
+      )}
+    </div>
     </nav>
   );
 }
