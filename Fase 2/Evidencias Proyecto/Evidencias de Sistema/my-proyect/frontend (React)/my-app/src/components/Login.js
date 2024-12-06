@@ -1,42 +1,26 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext'; // Usamos el login desde el contexto
 import '../styles/Login.css';
-import { useAuth } from '../AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Usa login desde el contexto
+  const { login } = useAuth(); // Obtener login del contexto
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
+    // Llamamos al login en el contexto
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', {
-        email,
-        password,
-      });
-
-      // Aquí se espera que la respuesta contenga un objeto user con las propiedades adecuadas
-      if (response.data.user) {
-        login({
-           id: response.data.user.id,
-           firstName: response.data.user.first_name,
-           lastName: response.data.user.last_name,
-           email: response.data.user.email,
-           isAdmin: response.data.user.is_superuser, // Usa is_superuser
-        });
-        alert('Inicio de sesión exitoso');
-        navigate('/'); // Redirige a la página de inicio
-     } else {
-        alert(response.data.error || 'Error en el inicio de sesión');
-     }
-  } catch (error) {
-     console.error('Error al iniciar sesión:', error);
-     alert(error.response?.data?.error || 'Error en el inicio de sesión'); // Asegúrate de mostrar el error correcto
-  }
+      await login({ email, password }); // Pasamos directamente las credenciales
+      alert('Inicio de sesión exitoso');
+      navigate('/'); // Redirige a la página de inicio
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      alert(error.response?.data?.error || 'Error en el inicio de sesión');
+    }
   };
 
   return (

@@ -32,6 +32,7 @@ const Register = () => {
         password: formData.password
       });
       alert('Registro exitoso');
+      navigate('/login');
       setFormData({
         first_name: '',
         last_name: '',

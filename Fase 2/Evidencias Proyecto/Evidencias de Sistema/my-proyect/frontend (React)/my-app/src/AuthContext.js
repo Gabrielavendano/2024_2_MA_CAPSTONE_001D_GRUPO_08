@@ -1,16 +1,63 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from './axiosConfig';
+import api, { setAuthToken } from './axiosConfig';
 
-const AuthContext = createContext(null); // Asegúrate de pasar null como valor inicial
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Estado para el usuario autenticado
+  const [token, setToken] = useState(localStorage.getItem('token')); // Estado para el token
+  const [loading, setLoading] = useState(true); // Estado para manejar la carga de usuario
   const navigate = useNavigate();
 
-  const login = (userData) => {
-    setUser(userData);
-    navigate('/');
+  useEffect(() => {
+    // Verificar si ya hay un token en localStorage
+    const savedToken = localStorage.getItem('token');
+    
+    if (savedToken) {
+      setToken(savedToken);
+      setAuthToken(savedToken);
+  
+      if (!user) {
+        setLoading(true); // Comenzamos el estado de carga
+  
+        api.get('http://localhost:8000/admin/auth/user/', { 
+          headers: { Authorization: `Bearer ${savedToken}` }
+        })
+        .then(response => {
+          setUser(response.data);
+          console.log("Usuario cargado: ", response.data);
+        })
+        .catch(error => {
+          if (error.response && error.response.status !== 401) {
+            console.error('Error al obtener el usuario:', error);
+          }
+          localStorage.removeItem('token');
+          setUser(null);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+      }
+    } else {
+      setLoading(false); // Si no hay token, terminamos la carga
+    }
+  }, [token]); // Cambiar la dependencia a 'token'
+  
+
+  const login = async (credentials) => {
+    try {
+      const response = await api.post('/login/', credentials);
+      setUser(response.data.user);
+      setToken(response.data.token);
+      setAuthToken(response.data.token);
+
+      localStorage.setItem('token', response.data.token);
+      navigate('/');
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      alert("Credenciales incorrectas");
+    }
   };
 
   const register = async (userData) => {
@@ -26,11 +73,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    setToken(null);
+    setAuthToken(null);
+    localStorage.removeItem('token');
     navigate('/');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -46,6 +46,13 @@ function ReservesAdmin() {
     }
   };
 
+  // SE APLICA EL FORMATO DE NÚMEROS PARA LOS PRECIOS
+  function numberFormat(number) {
+    // SE ASEGURA DE QUE LOS NÚMEROS TENGAN SEPARACIÓN DE MILES Y DECIMALES
+    const formattedNumber = number.toLocaleString('de-DE');
+    return formattedNumber;
+}
+
   return (
     <div>
       <h1>Reservas</h1>
@@ -55,7 +62,7 @@ function ReservesAdmin() {
             <th>ID</th>
             <th>Email</th>
             <th>Nombre Mascota</th>
-            <th>Tipo Mascota</th>
+            <th>Tamaño Mascota</th>
             <th>Raza</th>
             <th>Inicio</th>
             <th>Fin</th>
@@ -83,8 +90,8 @@ function ReservesAdmin() {
                   </td>
                   <td>
                     <input
-                      value={editData.pet_type}
-                      onChange={(e) => setEditData({ ...editData, pet_type: e.target.value })}
+                      value={editData.pet_size}
+                      onChange={(e) => setEditData({ ...editData, pet_size: e.target.value })}
                     />
                   </td>
                   <td>
@@ -110,7 +117,7 @@ function ReservesAdmin() {
                   <td>
                     <input
                       type="number"
-                      value={editData.total}
+                      value={numberFormat(editData.total)}
                       onChange={(e) => setEditData({ ...editData, total: e.target.value })}
                     />
                   </td>
@@ -128,11 +135,11 @@ function ReservesAdmin() {
                   <td>{reserve.id}</td>
                   <td>{reserve.email}</td>
                   <td>{reserve.pet_name}</td>
-                  <td>{reserve.pet_type}</td>
+                  <td>{reserve.pet_size}</td>
                   <td>{reserve.pet_breed}</td>
                   <td>{reserve.init_date}</td>
                   <td>{reserve.end_date}</td>
-                  <td>{reserve.total}</td>
+                  <td>$ {numberFormat(reserve.total)}</td>
                   <td>
                     <button className="btn btn-outline-primary btn-sm" onClick={() => handleEdit(reserve)}>
                       <i className="bi bi-pencil"></i> {/* Ícono de editar */}

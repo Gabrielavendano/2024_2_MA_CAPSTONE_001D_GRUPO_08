@@ -56,7 +56,7 @@ const Reservar = () => {
     const [dateInit, setDateInit] = useState('');
     const [dateEnd, setDateEnd] = useState('');
     const [namePet, setNamePet] = useState('');
-    const [typePet, setTypePet] = useState('Perro');
+    const [sizePet, setSizePet] = useState('');
     const [breedPet, setBreedPet] = useState('');
     const [email, setEmail] = useState(user?.email || '');
 
@@ -68,7 +68,7 @@ const Reservar = () => {
             init_date: dateInit,
             end_date: dateEnd,
             pet_name: namePet,
-            pet_type: typePet,
+            pet_size: sizePet,
             pet_breed: breedPet,
             total: price,
             email: email,
@@ -80,10 +80,10 @@ const Reservar = () => {
                 init_date: dateInit,
                 end_date: dateEnd,
                 pet_name: namePet,
-                pet_type: typePet,
+                pet_size: sizePet,
                 pet_breed: breedPet,
                 total: price,
-                email: email,
+                email: user.email,
                 user: user.id,
             };
         }
@@ -152,11 +152,11 @@ const Reservar = () => {
                         <h3>Datos Mascota</h3>
                         <label>Nombre</label>
                         <input className="form-control" onChange={(e) => setNamePet(e.target.value)} placeholder="Ingrese un nombre" />
-                        <label>Tipo</label>
-                        <select className="form-control" onChange={(e) => setTypePet(e.target.value)}>
-                            <option>Perro</option>
-                            <option>Gato</option>
-                            <option>Otros</option>
+                        <label>Tamaño</label>
+                        <select className="form-control" onChange={(e) => setSizePet(e.target.value)}>
+                            <option>Pequeño</option>
+                            <option>Mediano</option>
+                            <option>Grande</option>
                         </select>
                         <label>Raza</label>
                         <input className="form-control" onChange={(e) => setBreedPet(e.target.value)} placeholder="Ingrese una raza" />
@@ -177,6 +177,7 @@ const Reservar = () => {
 
                 <div className="total-wrapper">
                     <h3>Total</h3>
+                    <h6>(Cada dia de reserva tiene un valor de $20.000)</h6>
                     <div>$ {numberFormat(price)}</div> 
                     {/* SE APLICA EL FORMATO DE NÚMERO AL TOTAL */}
                 </div>

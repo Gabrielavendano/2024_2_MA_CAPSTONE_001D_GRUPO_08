@@ -9,7 +9,7 @@ class Reserve(models.Model):
     init_date = models.DateField()
     end_date = models.DateField()
     pet_name = models.CharField(max_length=100)
-    pet_type = models.CharField(max_length=100)
+    pet_size = models.CharField(max_length=100)
     pet_breed = models.CharField(max_length=100)
     total = models.IntegerField()
     email = models.EmailField(blank=True, null=True)
