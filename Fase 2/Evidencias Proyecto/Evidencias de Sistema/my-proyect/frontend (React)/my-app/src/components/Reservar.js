@@ -164,10 +164,11 @@ const Reservar = () => {
                         <label>Nombre</label>
                         <input className="form-control" onChange={(e) => setNamePet(e.target.value)} placeholder="Ingrese un nombre" />
                         <label>Tamaño</label>
-                        <select className="form-control" onChange={(e) => setSizePet(e.target.value)}>
-                            <option>Pequeño</option>
-                            <option>Mediano</option>
-                            <option>Grande</option>
+                        <select className="form-control" value={sizePet} onChange={(e) => setSizePet(e.target.value)}>
+                            <option value="" disabled>Elige una opción...</option> {/* Nueva opción predeterminada */}
+                            <option value="Pequeño">Pequeño</option>
+                            <option value="Mediano">Mediano</option>
+                            <option value="Grande">Grande</option>
                         </select>
                         <label>Raza</label>
                         <input className="form-control" onChange={(e) => setBreedPet(e.target.value)} placeholder="Ingrese una raza" />

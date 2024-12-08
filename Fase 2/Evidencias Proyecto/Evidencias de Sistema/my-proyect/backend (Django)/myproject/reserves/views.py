@@ -154,6 +154,7 @@ def simulate_webpay_transaction(request):
         # URL de retorno que simula la confirmación del pago
         return_url = f"http://localhost:8000/reserves/simulate_webpay_confirm/{reserve_id}/{simulated_token}/"
 
+        print("Generated return_url:", return_url)
         response_data = {
             "url": "http://localhost:3000/simulate_webpay",
             "token": simulated_token,
