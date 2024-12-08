@@ -56,7 +56,7 @@ const Reservar = () => {
     const [dateInit, setDateInit] = useState('');
     const [dateEnd, setDateEnd] = useState('');
     const [namePet, setNamePet] = useState('');
-    const [sizePet, setSizePet] = useState('');
+    const [sizePet, setSizePet] = useState('Mediano');
     const [breedPet, setBreedPet] = useState('');
     const [email, setEmail] = useState(user?.email || '');
 

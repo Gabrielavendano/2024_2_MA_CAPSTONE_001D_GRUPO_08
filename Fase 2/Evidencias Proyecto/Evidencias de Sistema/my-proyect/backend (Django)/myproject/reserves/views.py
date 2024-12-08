@@ -6,6 +6,11 @@ from .models import Reserve
 from .serializers import ReserveSerializer
 from django.contrib.auth import get_user_model
 from django.db import connection
+from django.core.mail import EmailMultiAlternatives
+from django.http import JsonResponse
+from django.conf import settings
+from django.template.loader import render_to_string
+import json
 
 CustomUser = get_user_model()
 
@@ -32,10 +37,14 @@ def create_reserve(request):
     print("Datos para el serializador:", reserva_data)
 
     # Serializa los datos
-    serializer = ReserveSerializer(data=request.data)
+    serializer = ReserveSerializer(data=reserva_data)
     if serializer.is_valid():
         # Guarda la reserva en la base de datos
-        serializer.save()
+        reserva = serializer.save()
+
+        # Enviar correo de confirmación
+        send_reservation_email(reserva)
+
         return Response({"message": "Reserva creada exitosamente"}, status=status.HTTP_201_CREATED)
     
     # Imprime y retorna errores en caso de datos inválidos
@@ -99,3 +108,19 @@ def delete_reserve(request, reserve_id):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+def send_reservation_email(reserva):
+    """Función para enviar un correo de confirmación de reserva."""
+    subject = 'Confirmación de Reserva - Perriot Hotel'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [reserva.email]
+    
+    # Renderizar el contenido del correo desde un template
+    content = render_to_string('emails/reservation_confirmation.html', {
+        'reservation': reserva,
+    })
+
+    # Crear y enviar el correo
+    message = EmailMultiAlternatives(subject, '', email_from, recipient_list)
+    message.attach_alternative(content, "text/html")
+    message.send()
