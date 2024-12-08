@@ -86,6 +86,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+
 ROOT_URLCONF = 'myproject.urls'
 
 TEMPLATES = [

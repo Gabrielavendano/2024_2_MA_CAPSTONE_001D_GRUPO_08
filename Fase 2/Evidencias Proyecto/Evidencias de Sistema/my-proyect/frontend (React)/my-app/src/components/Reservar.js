@@ -56,7 +56,7 @@ const Reservar = () => {
     const [dateInit, setDateInit] = useState('');
     const [dateEnd, setDateEnd] = useState('');
     const [namePet, setNamePet] = useState('');
-    const [sizePet, setSizePet] = useState('Mediano');
+    const [sizePet, setSizePet] = useState('');
     const [breedPet, setBreedPet] = useState('');
     const [email, setEmail] = useState(user?.email || '');
 
@@ -88,16 +88,27 @@ const Reservar = () => {
             };
         }
 
-        console.log('Datos que se envían al backend:', data);
-
         try {
-            const response = await axios.post('http://localhost:8000/reserves/create/', data);
-            console.log(response);
-            alert('Reserva creada con éxito');
-            navigate('/');
+            // Crear la reserva
+            const reserveResponse = await axios.post('http://localhost:8000/reserves/create/', data);
+            console.log('Respuesta completa de create_reserve:', reserveResponse);
+            const reserveId = reserveResponse.data.id; // ID de la reserva
+            console.log('Reserva creada, ID:', reserveId);
+
+            // Crear la simulación de Webpay
+            console.log('Llamando a simulate_webpay_transaction con POST...');
+            const webpayResponse = await axios.post('http://localhost:8000/reserves/simulate_webpay_transaction/', {
+                total: price,
+                reserve_id: reserveId,
+            });
+    
+            const { url, token, return_url } = webpayResponse.data;
+    
+            // Redirigir al usuario a la simulación de Webpay
+            window.location.href = `${url}?token=${token}&return_url=${encodeURIComponent(return_url)}`;
         } catch (error) {
-            console.error('Error al crear la reserva:', error);
-            alert('Hubo un error al crear la reserva');
+            console.error('Error al crear la reserva o el pago:', error);
+            alert('Hubo un error al procesar la reserva o el pago.');
         }
     }
 

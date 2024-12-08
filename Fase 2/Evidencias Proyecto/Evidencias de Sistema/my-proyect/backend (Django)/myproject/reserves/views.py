@@ -11,6 +11,8 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.template.loader import render_to_string
 import json
+from django.shortcuts import redirect
+import random
 
 CustomUser = get_user_model()
 
@@ -19,7 +21,6 @@ def create_reserve(request):
     # Verifica si el usuario está presente en los datos enviados
     user_id = request.data.get('user', None)
     email = request.data.get('email', None)
-    print("Datos del request:", request.data)
     if user_id:
         try:
             user = CustomUser.objects.get(id=user_id)
@@ -34,7 +35,6 @@ def create_reserve(request):
     if user:
         reserva_data['user'] = user.id
     reserva_data['email'] = email  
-    print("Datos para el serializador:", reserva_data)
 
     # Serializa los datos
     serializer = ReserveSerializer(data=reserva_data)
@@ -45,7 +45,7 @@ def create_reserve(request):
         # Enviar correo de confirmación
         send_reservation_email(reserva)
 
-        return Response({"message": "Reserva creada exitosamente"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "Reserva creada exitosamente", "id": reserva.id}, status=status.HTTP_201_CREATED)
     
     # Imprime y retorna errores en caso de datos inválidos
     print(serializer.errors)
@@ -124,3 +124,64 @@ def send_reservation_email(reserva):
     message = EmailMultiAlternatives(subject, '', email_from, recipient_list)
     message.attach_alternative(content, "text/html")
     message.send()
+
+
+@api_view(['POST'])
+def simulate_webpay_transaction(request):
+    """
+    Simula una transacción de Webpay.
+    """
+    try:
+        print("Datos recibidos:", request.data)
+
+        # Obtén los datos necesarios para el pago
+        total = request.data.get("total")
+        reserve_id = request.data.get("reserve_id")
+
+        # Verifica que la reserva exista
+        try:
+            reserva = Reserve.objects.get(id=reserve_id)
+        except Reserve.DoesNotExist:
+            return Response({"error": "Reserva no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Verifica que el total coincida (opcional)
+        if reserva.total != total:
+            return Response({"error": "El monto no coincide con la reserva"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Simula un token para la transacción
+        simulated_token = f"webpay_{random.randint(1000, 9999)}"
+
+        # URL de retorno que simula la confirmación del pago
+        return_url = f"http://localhost:8000/reserves/simulate_webpay_confirm/{reserve_id}/{simulated_token}/"
+
+        response_data = {
+            "url": "http://localhost:3000/simulate_webpay",
+            "token": simulated_token,
+            "return_url": return_url,
+        }
+
+        print("Respuesta generada:", response_data)
+        # Devuelve la URL para redirigir al usuario y el token
+        return Response(response_data, status=200)
+
+    except Exception as e:
+        print("Error en simulate_webpay_transaction:", e)
+        return Response({"error": str(e)}, status=500)
+
+
+
+@api_view(['GET'])
+def simulate_webpay_confirm(request, reserve_id, token):
+    """
+    Simula la confirmación de una transacción de Webpay.
+    """
+    try:
+        # Aquí podrías actualizar el estado de la reserva a "pagado"
+        # Si estás guardando estados de pago, actualízalo en la base de datos.
+        return Response({
+            "message": f"Pago para la reserva {reserve_id} confirmado con el token {token}.",
+            "status": "success",
+        }, status=200)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)

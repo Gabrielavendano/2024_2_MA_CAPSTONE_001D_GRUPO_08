@@ -15,6 +15,7 @@ import Reservar from './components/Reservar';
 import Contactos from './components/Contactos';
 import MisReservas from './components/MisReservas';
 import { AuthProvider } from './AuthContext';
+import SimulateWebpay from './components/SimulateWebpay';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="/reservar" element={<Reservar />} /> 
             <Route path="/mis-reservas" element={<MisReservas />} /> 
             <Route path="/contactos" element={<Contactos />} /> 
+            <Route path="/simulate_webpay" element={<SimulateWebpay />} />
           </Routes>
         </div>
       </AuthProvider>
