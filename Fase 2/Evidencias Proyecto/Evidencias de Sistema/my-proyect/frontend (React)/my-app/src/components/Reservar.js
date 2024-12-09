@@ -91,9 +91,7 @@ const Reservar = () => {
         try {
             // Crear la reserva
             const reserveResponse = await axios.post('http://localhost:8000/reserves/create/', data);
-            console.log('Respuesta completa de create_reserve:', reserveResponse);
             const reserveId = reserveResponse.data.id; // ID de la reserva
-            console.log('Reserva creada, ID:', reserveId);
 
             // Crear la simulación de Webpay
             console.log('Llamando a simulate_webpay_transaction con POST...');
@@ -104,13 +102,18 @@ const Reservar = () => {
     
             const { url, token, return_url } = webpayResponse.data;
     
-            // Redirigir al usuario a la simulación de Webpay
-            window.location.href = `${url}?token=${token}&return_url=${encodeURIComponent(return_url)}`;
-        } catch (error) {
-            console.error('Error al crear la reserva o el pago:', error);
-            alert('Hubo un error al procesar la reserva o el pago.');
-        }
+            navigate("/simulate_webpay", {
+            state: {
+                reservation: { ...data, id: reserveId }, // Pasar todos los datos relevantes
+                token: token,
+                returnUrl: return_url,
+            },
+        });
+    } catch (error) {
+        console.error('Error al crear la reserva o el pago:', error);
+        alert('Hubo un error al procesar la reserva o el pago.');
     }
+}
 
     function listServiceChange() {
         const radio_services = document.getElementsByName("service");

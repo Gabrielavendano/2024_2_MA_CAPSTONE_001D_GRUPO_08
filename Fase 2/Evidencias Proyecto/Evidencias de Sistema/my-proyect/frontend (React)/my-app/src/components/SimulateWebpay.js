@@ -5,9 +5,8 @@ import "../styles/SimulateWebpay.css";
 const SimulateWebpay = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get("token");
-    const returnUrl = queryParams.get("return_url");
+    const { state } = location; // Recibe los datos de navegación
+    const { reservation, token, returnUrl } = state || {}; // Extrae los datos relevantes
 
     const [showPaymentForm, setShowPaymentForm] = useState(false);
     const [paymentDetails, setPaymentDetails] = useState({
@@ -28,18 +27,11 @@ const SimulateWebpay = () => {
     const handlePayment = async () => {
         setLoading(true);
         try {
-            // Simulación de procesamiento de pago
-            setTimeout(async () => {
-                const response = await fetch(returnUrl);
-                const data = await response.json();
-                setPaymentStatus(data);
-
-                // Muestra el mensaje de éxito
+            setTimeout(() => {
                 setSuccessMessage(true);
 
-                // Redirigir después de confirmar el pago
                 setTimeout(() => {
-                    navigate("/"); // Cambia "/" por la ruta donde quieras redirigir después del pago
+                    navigate("/"); // Redirige al inicio o donde prefieras
                 }, 3000); // Espera 3 segundos antes de redirigir
             }, 2000);
         } catch (error) {
@@ -63,13 +55,24 @@ const SimulateWebpay = () => {
             {!successMessage && (
                 <>
                     <div className="simulate-webpay-card">
-                        <h1 className="simulate-webpay-title">Simulación de Webpay</h1>
+                        <h1 className="simulate-webpay-title">Sistema de Pago Webpay</h1>
                         <p className="simulate-webpay-info">
                             Por favor, revisa los detalles de la transacción antes de proceder con el pago.
                         </p>
-                        <div className="simulate-webpay-details">
-                            <p><strong>Token de la transacción:</strong> {token}</p>
-                        </div>
+                        {reservation && (
+                            <div className="reservation-card">
+                                <h2 className="reservation-card-title">Detalles de la Reserva</h2>
+                                <p><strong>ID:</strong> {reservation.id}</p>
+                                <p><strong>Email:</strong> {reservation.email}</p>
+                                <p><strong>Nombre Mascota:</strong> {reservation.pet_name}</p>
+                                <p><strong>Tamaño Mascota:</strong> {reservation.pet_size}</p>
+                                <p><strong>Raza Mascota:</strong> {reservation.pet_breed}</p>
+                                <p><strong>Fecha Inicio:</strong> {reservation.init_date}</p>
+                                <p><strong>Fecha Fin:</strong> {reservation.end_date}</p>
+                                <p><strong>Total:</strong> ${reservation.total}</p>
+                                <p><strong>Token de Transacción:</strong> {token}</p>
+                            </div>
+                        )}
                         <button
                             className="simulate-webpay-button"
                             onClick={openPaymentForm}
@@ -148,7 +151,7 @@ const SimulateWebpay = () => {
                     <p>Gracias por completar tu pago. Tu reserva ha sido confirmada.</p>
                     <button
                         className="simulate-webpay-button"
-                        onClick={() => navigate("/")} // Cambia "/" por la ruta deseada
+                        onClick={() => navigate("/")}
                     >
                         Volver al Inicio
                     </button>
