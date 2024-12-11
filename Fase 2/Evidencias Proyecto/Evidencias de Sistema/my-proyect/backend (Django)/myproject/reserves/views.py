@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Reserve
+from .models import Reserve, MAX_RESERVAS_POR_DIA
 from .serializers import ReserveSerializer
 from django.contrib.auth import get_user_model
 from django.db import connection
@@ -13,19 +13,29 @@ from django.template.loader import render_to_string
 import json
 from django.shortcuts import redirect
 import random
+from datetime import datetime, timedelta
+from services.models import Service
+from django.http import JsonResponse
+
 
 CustomUser = get_user_model()
 
+@api_view(['GET'])
+def get_base_price(request):
+    """
+    Devuelve el precio base por día de una reserva.
+    """
+    return Response({"base_price": 20000}, status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 def create_reserve(request):
-    # Verifica si el usuario está presente en los datos enviados
     user_id = request.data.get('user', None)
     email = request.data.get('email', None)
     if user_id:
         try:
             user = CustomUser.objects.get(id=user_id)
-            email = user.email  
-            print("Usuario encontrado:", user, "Email:", email)
+            email = user.email
         except CustomUser.DoesNotExist:
             return Response({"error": "Usuario no encontrado"}, status=status.HTTP_400_BAD_REQUEST)
     else:
@@ -34,22 +44,89 @@ def create_reserve(request):
     reserva_data = request.data.copy()
     if user:
         reserva_data['user'] = user.id
-    reserva_data['email'] = email  
+    reserva_data['email'] = email
 
-    # Serializa los datos
+    try:
+        # Extraer servicios como lista de objetos del JSON
+        services = reserva_data.get('services', [])
+        
+        init_date = reserva_data.get('init_date')
+        end_date = reserva_data.get('end_date')
+
+        # Calcular duración en días
+        fecha1 = datetime.strptime(init_date, "%Y-%m-%d")
+        fecha2 = datetime.strptime(end_date, "%Y-%m-%d")
+        days = (fecha2 - fecha1).days or 1
+
+        # Calcular precios de servicios directamente desde los datos recibidos
+        total_services = sum(service['price'] for service in services if 'price' in service)
+
+        # Calcular el total de la reserva
+        base_price = days * 20000
+        total = base_price + total_services
+        total_reserva = base_price * 0.2  # Solo considera el precio base
+
+        # Asignar totales calculados al backend
+        reserva_data['total'] = total
+        reserva_data['total_reserva'] = total_reserva
+
+    except Exception as e:
+        print(f"Error en el cálculo de totales: {str(e)}")
+        return Response({"error": f"Error en el cálculo de totales: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Validar y guardar reserva
     serializer = ReserveSerializer(data=reserva_data)
-    if serializer.is_valid():
-        # Guarda la reserva en la base de datos
+    if not serializer.is_valid():
+        print("Errores del serializer:", serializer.errors)
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
         reserva = serializer.save()
-
-        # Enviar correo de confirmación
         send_reservation_email(reserva)
+        return Response({
+            "message": "Reserva creada exitosamente",
+            "id": reserva.id,
+            "total": total,
+            "total_reserva": total_reserva
+        }, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        print("Error inesperado al guardar la reserva:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"message": "Reserva creada exitosamente", "id": reserva.id}, status=status.HTTP_201_CREATED)
-    
-    # Imprime y retorna errores en caso de datos inválidos
-    print(serializer.errors)
-    return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def calculate_reservation_cost(request):
+    try:
+        services = request.data.get('services', [])
+        init_date = request.data.get('init_date')
+        end_date = request.data.get('end_date')
+
+        # Validar fechas
+        if not init_date or not end_date:
+            return Response({"error": "Las fechas son obligatorias."}, status=400)
+
+        # Calcular duración en días
+        fecha1 = datetime.strptime(init_date, "%Y-%m-%d")
+        fecha2 = datetime.strptime(end_date, "%Y-%m-%d")
+        days = (fecha2 - fecha1).days or 1
+
+        # Calcular precios de servicios
+        total_services = sum(
+            Service.objects.get(id=service_id).price for service_id in services
+        )
+
+        # Calcular totales
+        base_price = days * 20000
+        total = base_price + total_services
+        total_reserva = base_price * 0.2  # Solo considera el precio base
+
+        return Response({
+            "total": total,
+            "total_reserva": total_reserva,
+        }, status=200)
+    except Exception as e:
+        return Response({"error": f"Error en el cálculo de costos: {str(e)}"}, status=500)
+
 
 # Para visualizar la tabla reserves_reserve de la base de datos Sqlite3
 def show_columns():
@@ -186,3 +263,57 @@ def simulate_webpay_confirm(request, reserve_id, token):
 
     except Exception as e:
         return Response({"error": str(e)}, status=500)
+    
+@api_view(['POST'])
+def check_availability(request):
+    init_date = request.data.get('init_date')
+    end_date = request.data.get('end_date')
+
+    if not init_date or not end_date:
+        return Response({"error": "Fechas no proporcionadas."}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        fecha_inicio = datetime.strptime(init_date, "%Y-%m-%d").date()
+        fecha_fin = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+        fechas = [fecha_inicio + timedelta(days=i) for i in range((fecha_fin - fecha_inicio).days)]
+
+        for fecha in fechas:
+            reservas_en_fecha = Reserve.objects.filter(
+                init_date__lte=fecha,
+                end_date__gte=fecha
+            ).count()
+            if reservas_en_fecha >= MAX_RESERVAS_POR_DIA:
+                return Response({"available": False})
+
+        return Response({"available": True})
+    except Exception as e:
+        return Response({"error": f"Error procesando las fechas: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def get_slots_range(request):
+    try:
+        start_date = request.data.get('start_date')
+        end_date = request.data.get('end_date')
+
+        if not start_date or not end_date:
+            return Response({"error": "Fechas no proporcionadas."}, status=400)
+
+        start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+        current_date = start_date
+        slots = {}
+
+        while current_date <= end_date:
+            reservas_count = Reserve.objects.filter(
+                init_date__lte=current_date,
+                end_date__gte=current_date
+            ).count()
+            slots[str(current_date)] = max(40 - reservas_count, 0)
+            current_date += timedelta(days=1)
+        return Response({"slots": slots}, status=200)
+    except Exception as e:
+        print("Error en get_slots_range:", e)
+        return Response({"error": f"Error al procesar la solicitud: {str(e)}"}, status=500)

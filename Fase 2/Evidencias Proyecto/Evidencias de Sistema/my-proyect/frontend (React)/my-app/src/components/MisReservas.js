@@ -5,20 +5,18 @@ import "../styles/Reservas.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-
 function ReservesUser() {
   const [reserves, setReserves] = useState([]);
   const { token, user } = useAuth();
 
   useEffect(() => {
-    if (token && user) { // Solo llama si hay un token y un usuario autenticado
+    if (token && user) {
       fetchReserves();
     }
   }, [token, user]);
 
   const fetchReserves = async () => {
     try {
-      // Ahora solo realiza una llamada al endpoint sin pasar params de usuario
       const response = await axios.get("http://localhost:8000/reserves/my_reserves/", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,16 +27,10 @@ function ReservesUser() {
       console.error("Error fetching reserves:", error);
     }
   };
-  
-  
 
-  // SE APLICA EL FORMATO DE NÚMEROS PARA LOS PRECIOS
   function numberFormat(number) {
-    // SE ASEGURA DE QUE LOS NÚMEROS TENGAN SEPARACIÓN DE MILES Y DECIMALES
-    const formattedNumber = number.toLocaleString('de-DE');
-    return formattedNumber;
-}
-  
+    return number.toLocaleString("de-DE");
+  }
 
   return (
     <div>
@@ -51,9 +43,12 @@ function ReservesUser() {
             <th>Nombre Mascota</th>
             <th>Tamaño Mascota</th>
             <th>Raza</th>
-            <th>Inicio</th>
-            <th>Fin</th>
+            <th>Fecha Ingreso</th>
+            <th>Fecha Retiro</th>
+            <th>Servicios</th>
+            <th>Total Base</th>
             <th>Total</th>
+            <th>Pagado</th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +61,21 @@ function ReservesUser() {
               <td>{reserve.pet_breed}</td>
               <td>{reserve.init_date}</td>
               <td>{reserve.end_date}</td>
+              <td>
+                {Array.isArray(reserve.services) && reserve.services.length > 0 ? (
+                  reserve.services.map((service, index) => (
+                    <div key={index}>
+                      {service.name} - ${numberFormat(service.price || 0)}
+                    </div>
+                  ))
+                ) : (
+                  "No se seleccionaron servicios"
+                )}
+              </td>
+
+              <td>$ {numberFormat(reserve.total_reserva)}</td>
               <td>$ {numberFormat(reserve.total)}</td>
+              <td>{reserve.pagado ? "Sí" : "No"}</td>
             </tr>
           ))}
         </tbody>

@@ -19,6 +19,7 @@
 
 /* Estilo de los enlaces en la lista */
 .navbar-list {
+  text-align: justify;
   list-style: none;
   display: flex;
   margin: 0;

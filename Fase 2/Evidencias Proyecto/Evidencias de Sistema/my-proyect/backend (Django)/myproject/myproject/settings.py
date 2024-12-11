@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
+import pymysql
+pymysql.install_as_MySQLdb()
+import os
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +32,8 @@ SECRET_KEY = 'django-insecure-&s3)=5sd5(9-6=22_-(69yg%69+_6c@ti-)j&ta3)o+5!lyd5l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 
 # Application definition
@@ -114,17 +120,16 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'PerriotHotelDB',
-        'USER': 'django_user',
-        'PASSWORD': 'coloma280302',
-        'HOST': 'localhost',
-        'PORT': '1433',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-        },
+        'ENGINE': 'django.db.backends.mysql',  # Cambia el motor de la base de datos
+        'NAME': 'perriot_hotel_capstone',  # Nombre de tu base de datos en GoDaddy
+        'USER': 'django_user',           # Usuario de la base de datos
+        'PASSWORD': 'coloma280302',    # Contraseña del usuario
+        'HOST': 'localhost',                  # Usualmente localhost en GoDaddy
+        'PORT': '3306',                       # Puerto para MySQL (por defecto 3306)
+        
     }
 }
+
 
 
 # Password validation
@@ -177,5 +182,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('USER_MAIL')
 EMAIL_HOST_PASSWORD = config('USER_MAIL_PASSWORD')
 
+DEBUG = True
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 

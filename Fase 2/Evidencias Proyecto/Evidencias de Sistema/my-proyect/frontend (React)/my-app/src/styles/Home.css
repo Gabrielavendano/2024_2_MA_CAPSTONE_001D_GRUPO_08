@@ -1,18 +1,100 @@
-/* Home.css */
-
-/* Estilo del contenedor del carrusel para que ocupe todo el ancho */
-.carousel-container {
+/* Contenedor principal */
+.home-container {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    background-color: #fdfdfd;
     border-radius: 10px;
 }
 
-/* Ajuste de la imagen del carrusel para que cubra todo el espacio */
-.carousel-image {
-    width: 100%;
-    height: auto;
+/* Título principal */
+.home-title {
+    font-size: 3rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.home-subtitle {
+    font-size: 1.5rem;
+    color: #34495e;
+    margin-bottom: 30px;
+}
+
+/* Carrusel */
+.home-carousel-wrapper {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+/* Botón de reserva */
+.home-reserve-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #3e8e41;
+    color: white;
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.home-reserve-button:hover {
+    background-color: #2e6e31;
+    transform: scale(1.05);
+}
+
+/* Sección de consejos */
+.home-advice-section {
+    margin-top: 50px;
+}
+
+.home-advice-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.home-advice-description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.home-advice-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.home-advice-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 200px;
+}
+
+.home-advice-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
     object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.home-advice-text {
+    font-size: 0.9rem;
+    color: #333;
+    text-align: center;
 }

@@ -16,6 +16,8 @@ import Contactos from './components/Contactos';
 import MisReservas from './components/MisReservas';
 import { AuthProvider } from './AuthContext';
 import SimulateWebpay from './components/SimulateWebpay';
+import AddServices from './components/AddServices';
+import FullScreenCalendar from './components/FullScreenCalendar';
 
 function App() {
   return (
@@ -33,9 +35,11 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/reservas" element={<Reservas />} /> 
             <Route path="/reservar" element={<Reservar />} /> 
+            <Route path="/add-services" element={<AddServices />} />
             <Route path="/mis-reservas" element={<MisReservas />} /> 
             <Route path="/contactos" element={<Contactos />} /> 
             <Route path="/simulate_webpay" element={<SimulateWebpay />} />
+            <Route path="/full_screen_calendar" element={<FullScreenCalendar />} />
           </Routes>
         </div>
       </AuthProvider>

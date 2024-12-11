@@ -25,10 +25,7 @@ function Navbar() {
         />
       </div>
 
-      {/* Botón de hamburguesa */}
-      <div className="hamburger" onClick={toggleMenu}>
-        &#9776; {/* Símbolo de hamburguesa */}
-      </div>
+     
 
       <ul className="navbar-list">
         {/* Enlaces visibles para todos */}
@@ -37,6 +34,7 @@ function Navbar() {
         {!user?.is_superuser && (
           <>
             <li><Link to="/about">Quiénes Somos</Link></li>
+            <li><Link to="/reservar">Reservar</Link></li>
             <li><Link to="/services">Servicios</Link></li>
             <li><Link to="/gallery">Galería</Link></li>
             <li><Link to="/contact">Contacto</Link></li>
