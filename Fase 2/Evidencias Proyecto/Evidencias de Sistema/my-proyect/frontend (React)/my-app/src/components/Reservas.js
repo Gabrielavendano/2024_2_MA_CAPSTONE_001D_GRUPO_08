@@ -67,9 +67,8 @@ function ReservesAdmin() {
           <th>Fecha Ingreso</th>
           <th>Fecha Retiro</th>
           <th>Servicios</th>
-          <th>Total Base</th>
+          <th>Total Reserva</th>
           <th>Total</th>
-          <th>Pagado</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -177,7 +176,7 @@ function ReservesAdmin() {
               </td>
                 <td>$ {numberFormat(reserve.total_reserva)}</td>
                 <td>$ {numberFormat(reserve.total)}</td>
-                <td>{reserve.pagado ? "Sí" : "No"}</td>
+                
                 <td>
                   <button className="btn btn-outline-primary btn-sm" onClick={() => handleEdit(reserve)}>
                     Editar

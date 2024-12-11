@@ -221,8 +221,8 @@ def simulate_webpay_transaction(request):
         except Reserve.DoesNotExist:
             return Response({"error": "Reserva no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Verifica que el total coincida (opcional)
-        if reserva.total != total:
+        # Verifica que el total coincida con el total o el total_reserva
+        if total not in [reserva.total, reserva.total_reserva]:
             return Response({"error": "El monto no coincide con la reserva"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Simula un token para la transacción
@@ -245,6 +245,7 @@ def simulate_webpay_transaction(request):
     except Exception as e:
         print("Error en simulate_webpay_transaction:", e)
         return Response({"error": str(e)}, status=500)
+
 
 
 

@@ -24,6 +24,8 @@ const Reservar = () => {
     const [showModal, setShowModal] = useState(false);
     const [availability, setAvailability] = useState(null);
     const [showCalendar, setShowCalendar] = useState({ show: false, type: '' });
+    const [errors, setErrors] = useState({});
+
 
     const calculateCosts = async () => {
         if (!dateInit || !dateEnd) {
@@ -92,6 +94,22 @@ const Reservar = () => {
         return date.split('/').reverse().join('-'); // Convertir DD/MM/YYYY a YYYY-MM-DD
     };
 
+    const validateFields = () => {
+        const newErrors = {};
+    
+        if (!dateInit) newErrors.dateInit = "Debe seleccionar una fecha de inicio.";
+        if (!dateEnd) newErrors.dateEnd = "Debe seleccionar una fecha de fin.";
+        if (!namePet.trim()) newErrors.namePet = "El nombre de la mascota es obligatorio.";
+        if (!sizePet) newErrors.sizePet = "Debe seleccionar un tamaño.";
+        if (!breedPet.trim()) newErrors.breedPet = "La raza de la mascota es obligatoria.";
+        if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = "Debe ingresar un email válido.";
+    
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0; // Si no hay errores, devuelve true
+    };
+    
+    
+    // FUNCION RESERVAR
     const handleReserve = async () => {
         if (!user) {
             alert('Debes iniciar sesión para realizar una reserva.');
@@ -102,6 +120,8 @@ const Reservar = () => {
             alert('Las fechas seleccionadas no están disponibles.');
             return;
         }
+
+        if (!validateFields()) return;
     
         const data = {
             services: selectedServices.map((service) => ({
@@ -121,15 +141,40 @@ const Reservar = () => {
         };
     
         try {
-            const response = await axios.post('http://localhost:8000/reserves/create/', data);
-            const { total, total_reserva } = response.data;
-            setPrice(total);
-            setTotalReserva(total_reserva);
+            // Paso 1: Crear la reserva
+            const reserveResponse = await axios.post('http://localhost:8000/reserves/create/', data);
+            const { id, total, total_reserva } = reserveResponse.data;
     
-            navigate('/mis-reservas');
+            // Paso 2: Llamar al endpoint para simular Webpay
+            const paymentOptionTotal = paymentOption === "total" ? total : total_reserva;
+            const simulateResponse = await axios.post('http://localhost:8000/reserves/simulate_webpay_transaction/', {
+                total: paymentOptionTotal,
+                reserve_id: id,
+            });
+    
+            const { url, token, return_url } = simulateResponse.data;
+    
+            // Paso 3: Redirigir al simulador de Webpay
+            navigate('/simulate_webpay', {
+                state: {
+                    reservation: {
+                        id: id,
+                        email: email,
+                        pet_name: namePet,
+                        pet_size: sizePet,
+                        pet_breed: breedPet,
+                        init_date: dateInit,
+                        end_date: dateEnd,
+                        total: paymentOptionTotal,
+                        services: selectedServices,
+                    },
+                    token: token,
+                    returnUrl: return_url,
+                },
+            });
         } catch (error) {
-            console.error('Error al crear la reserva:', error.response?.data || error.message);
-            alert('Hubo un error al procesar la reserva.');
+            console.error('Error al crear la reserva o iniciar Webpay:', error.response?.data || error.message);
+            alert('Hubo un error al procesar la reserva o el pago.');
         }
     };
     
@@ -148,6 +193,7 @@ const Reservar = () => {
         if (!date) return 'YYYY-MM-DD'; // Valor por defecto si la fecha no está seleccionada
         return date;
     };
+    
     
 
     return (
@@ -180,6 +226,7 @@ const Reservar = () => {
                                 readOnly
                                 onClick={() => setShowCalendar({ show: true, type: 'init' })}
                             />
+                            {errors.dateInit && <span className="error-message">{errors.dateInit}</span>}
                         </div>
                         <div className="col-6">
                             <h4>Fecha Salida</h4>
@@ -191,6 +238,7 @@ const Reservar = () => {
                                 readOnly
                                 onClick={() => setShowCalendar({ show: true, type: 'end' })}
                             />
+                            {errors.dateInit && <span className="error-message">{errors.dateInit}</span>}
                         </div>
                     </div>
                     {showCalendar.show && (
@@ -201,11 +249,7 @@ const Reservar = () => {
                             onClose={() => setShowCalendar({ show: false, type: '' })}
                         />
                     )}
-                    {!availability && (
-                        <div className="availability-error">
-                            <p>Las fechas seleccionadas no están disponibles.</p>
-                        </div>
-                    )}
+            
                    <div className="payment-option">
                         <h4>Elige una opción de pago:</h4>
                         <div className="payment-row">
@@ -235,16 +279,42 @@ const Reservar = () => {
                 <form className="reserve-form">
                     <h3>Datos Mascota</h3>
                     <label>Nombre</label>
-                    <input className="form-control" onChange={(e) => setNamePet(e.target.value)} />
-                    <label>Tamaño</label>
-                    <select className="form-control" onChange={(e) => setSizePet(e.target.value)}>
-                        <option value="" disabled>Elige una opción...</option>
-                        <option value="Pequeño">Pequeño</option>
-                        <option value="Mediano">Mediano</option>
-                        <option value="Grande">Grande</option>
-                    </select>
-                    <label>Raza</label>
-                    <input className="form-control" onChange={(e) => setBreedPet(e.target.value)} />
+                        <input 
+                            className="form-control" 
+                            placeholder="Nombre de la mascota" // Añadido un placeholder para más claridad
+                            onChange={(e) => setNamePet(e.target.value)}
+                            value={namePet}
+                            disabled={!user}
+                        />
+                        {errors.dateInit && <span className="error-message">{errors.dateInit}</span>}
+                        {!user && <p className="error-message">Debes iniciar sesión para modificar este campo.</p>}
+
+                        <label>Tamaño</label>
+                        <select 
+                            className="form-control" 
+                            value={sizePet} // Asegura que el valor inicial sea "Elige una opción..."
+                            onChange={(e) => setSizePet(e.target.value)}
+                            disabled={!user}
+                        >
+                            <option value="" disabled>Elige una opción...</option>
+                            <option value="Pequeño">Pequeño</option>
+                            <option value="Mediano">Mediano</option>
+                            <option value="Grande">Grande</option>
+                        </select>
+                        {!user && <p className="error-message">Debes iniciar sesión para modificar este campo.</p>}
+                        {errors.dateInit && <span className="error-message">{errors.dateInit}</span>}
+
+                        <label>Raza</label>
+                        <input 
+                            className="form-control" 
+                            placeholder="Raza de la mascota" // Añadido un placeholder para más claridad
+                            onChange={(e) => setBreedPet(e.target.value)} 
+                            value={breedPet}
+                            disabled={!user}
+                        />
+                        {!user && <p className="error-message">Debes iniciar sesión para modificar este campo.</p>}
+                        {errors.dateInit && <span className="error-message">{errors.dateInit}</span>}
+
                 </form>
                 <form className="reserve-form">
                     <h3>Datos Contacto</h3>
@@ -254,13 +324,16 @@ const Reservar = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         readOnly={!!user}
+                        disabled={!user}
                     />
+                    {!user && <p className="error-message">Este campo se completará solo cuando inicies sesión.</p>}
                     <label>Notas Adicionales</label>
                     <textarea
                         className="form-control"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         placeholder="Instrucciones especiales, medicación, etc."
+                        disabled={!user}
                     />
                 </form>
                 <button onClick={() => setShowModal(true)} className="add-services-button">Añadir Servicios</button>

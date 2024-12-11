@@ -46,9 +46,9 @@ function ReservesUser() {
             <th>Fecha Ingreso</th>
             <th>Fecha Retiro</th>
             <th>Servicios</th>
-            <th>Total Base</th>
+            <th>Total Reserva</th>
             <th>Total</th>
-            <th>Pagado</th>
+        
           </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@ function ReservesUser() {
 
               <td>$ {numberFormat(reserve.total_reserva)}</td>
               <td>$ {numberFormat(reserve.total)}</td>
-              <td>{reserve.pagado ? "Sí" : "No"}</td>
+            
             </tr>
           ))}
         </tbody>

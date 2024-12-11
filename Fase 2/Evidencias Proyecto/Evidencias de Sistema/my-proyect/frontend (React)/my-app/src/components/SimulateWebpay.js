@@ -21,10 +21,41 @@ const SimulateWebpay = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setPaymentDetails({ ...paymentDetails, [name]: value });
+
+        let formattedValue = value;
+
+        if (name === "cardNumber") {
+            // Permitir solo números y formatear en bloques de 4
+            formattedValue = value.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim();
+        }
+
+        if (name === "expiryDate") {
+            // Permitir solo números y agregar "/" automáticamente después de MM
+            formattedValue = value.replace(/\D/g, "").slice(0, 4);
+            if (formattedValue.length > 2) {
+                formattedValue = `${formattedValue.slice(0, 2)}/${formattedValue.slice(2)}`;
+            }
+        }
+
+        if (name === "securityCode") {
+            // Permitir solo números y limitar a 3 dígitos
+            formattedValue = value.replace(/\D/g, "").slice(0, 3);
+        }
+
+        setPaymentDetails({ ...paymentDetails, [name]: formattedValue });
     };
 
     const handlePayment = async () => {
+        if (
+            !paymentDetails.cardNumber ||
+            !paymentDetails.cardHolder ||
+            !paymentDetails.expiryDate ||
+            !paymentDetails.securityCode
+        ) {
+            setPaymentStatus({ error: "Por favor, completa todos los campos." });
+            return;
+        }
+
         setLoading(true);
         try {
             setTimeout(() => {
@@ -69,7 +100,7 @@ const SimulateWebpay = () => {
                                 <p><strong>Raza Mascota:</strong> {reservation.pet_breed}</p>
                                 <p><strong>Fecha Inicio:</strong> {reservation.init_date}</p>
                                 <p><strong>Fecha Fin:</strong> {reservation.end_date}</p>
-                                <p><strong>Total:</strong> ${reservation.total}</p>
+                                <p><strong>Total a Pagar:</strong> ${reservation.total.toLocaleString("de-DE")}</p>
                                 <p><strong>Token de Transacción:</strong> {token}</p>
                             </div>
                         )}
@@ -93,6 +124,7 @@ const SimulateWebpay = () => {
                                         value={paymentDetails.cardNumber}
                                         onChange={handleInputChange}
                                         placeholder="1234 5678 9012 3456"
+                                        maxLength={19} // 16 números + 3 espacios
                                         required
                                     />
                                     <label>Nombre del Titular</label>
@@ -111,6 +143,7 @@ const SimulateWebpay = () => {
                                         value={paymentDetails.expiryDate}
                                         onChange={handleInputChange}
                                         placeholder="MM/AA"
+                                        maxLength={5} // MM/AA
                                         required
                                     />
                                     <label>Código de Seguridad</label>
@@ -120,9 +153,13 @@ const SimulateWebpay = () => {
                                         value={paymentDetails.securityCode}
                                         onChange={handleInputChange}
                                         placeholder="123"
+                                        maxLength={3}
                                         required
                                     />
                                 </form>
+                                {paymentStatus?.error && (
+                                    <p className="payment-error">{paymentStatus.error}</p>
+                                )}
                                 <div className="simulate-webpay-modal-buttons">
                                     <button
                                         className="simulate-webpay-button"
