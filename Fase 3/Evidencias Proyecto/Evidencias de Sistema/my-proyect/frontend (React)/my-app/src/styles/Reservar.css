@@ -1,0 +1,227 @@
+/* Contenedor principal */
+.reserve-form-wrapper {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+.page-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.care-to-reserve {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #ff2d42;
+    margin-bottom: 40px;
+}
+
+.welcome-message {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #0056b3;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* Opciones de pago */
+.payment-option {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.payment-option h4 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.payment-row {
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    gap: 20px; /* Espaciado entre checkbox y texto */
+    margin-bottom: 10px;
+}
+
+.payment-option input[type="radio"] {
+    accent-color: #007bff;
+    width: 20px;
+    height: 20px;
+    margin: 2px 0; /* Ajusta la posición vertical */
+}
+
+
+.payment-option label {
+    margin: 0;
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: normal;
+}
+
+
+/* Formularios */
+.forms-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.reserve-form {
+    flex: 1;
+    min-width: 300px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reserve-form h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+}
+
+.reserve-form label {
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+.reserve-form input,
+.reserve-form select,
+.reserve-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Botón Añadir Servicios */
+.add-services-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    transition: background-color 0.3s;
+}
+
+.add-services-button:hover {
+    background-color: #0056b3;
+}
+
+/* Sección Total */
+.total-wrapper {
+    background-color: #f1f1f1;
+    padding: 15px 20px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.selected-services {
+    background-color: #f1f1f1;
+    padding: 15px 20px;
+    border-radius: 5px;
+    text-align: center; 
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-right: 650px;
+}
+
+/* Botón Reservar */
+.reserve-button {
+    background-color: #28a745;
+    color: white;
+    font-size: 1.2rem;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.reserve-button:hover {
+    background-color: #218838;
+}
+
+/* Notas Adicionales */
+.reserve-form textarea {
+    min-height: 100px;
+    resize: none;
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.disabled-form {
+    position: relative;
+    pointer-events: none; /* Deshabilita todas las interacciones */
+    opacity: 0.6; /* Da un efecto visual de deshabilitado */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Oscurece el formulario */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Asegura que se muestre encima */
+    font-size: 1.5rem;
+}

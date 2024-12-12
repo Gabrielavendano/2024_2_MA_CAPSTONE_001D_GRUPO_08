@@ -1,0 +1,68 @@
+.simulate-webpay-container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+.simulate-webpay-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.reservation-card {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.reservation-services {
+    margin-top: 20px;
+}
+
+.services-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.services-table th,
+.services-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.services-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.simulate-webpay-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.simulate-webpay-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
