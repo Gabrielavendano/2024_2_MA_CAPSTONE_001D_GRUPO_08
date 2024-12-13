@@ -1,0 +1,72 @@
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .contact-info {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .social-media {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-media a {
+    color: #3b5998;
+    font-size: 18px;
+    transition: color 0.3s;
+  }
+  
+  .social-media a:hover {
+    color: #0073e6;
+  }
+  
+  .copyright {
+    background-color: #3578e5;
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 5px 0;
+  }
+  
+  .footer-logo {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .footer-logo .logo-image {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .footer-logo h1, .footer-logo h2, .footer-logo p {
+    margin: 5px 0;
+  }
+  
+  .footer-logo p:last-child {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .rights {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  footer {
+    margin-top: 200px; /* Ajusta el valor según el espacio que desees */
+}
+  
+  
